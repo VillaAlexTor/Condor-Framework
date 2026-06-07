@@ -1,54 +1,54 @@
 # AGENTS.md — Cóndor Framework
 
-## Repo state
+## Estado del repo
 
-Early-stage monorepo. Only **`condor-cli/`** has code; `condor-dashboard` and `condor-report` exist only in the README architecture diagram.
+Monorepo en etapa temprana. Solo **`condor-cli/`** tiene código; `condor-dashboard` y `condor-report` existen únicamente en el diagrama de arquitectura del README.
 
-## Entrypoint & run
+## Entrypoint y ejecución
 
 ```bash
-# From repo root or condor-cli/
+# Desde la raíz del repo o condor-cli/
 python condor-cli/condor.py --target ejemplo.bo              # default: dns,whois,crt,wayback
-python condor-cli/condor.py --target ej.bo --all-modules     # needs all API keys
+python condor-cli/condor.py --target ej.bo --all-modules     # necesita todas las API keys
 python condor-cli/condor.py --target ej.bo --format html -o report.html
 python condor-cli/condor.py --list-modules
 ```
 
-Version: `--version` → v0.1.0
+Versión: `--version` → v0.1.0
 
-## Dependencies
+## Dependencias
 
-No `requirements.txt`, `pyproject.toml`, or `setup.py` exists. Install manually:
+No existe `requirements.txt`, `pyproject.toml` ni `setup.py`. Instalar manualmente:
 
 ```bash
 pip install dnspython python-whois requests
 ```
 
-## Broken module aliases
+## Aliases de módulos rotos
 
-`crt` → maps to `modules.crt_sh` (file does not exist, should be `modules/crt_sh.py` or alias to `dns_recon.crt_sh` inside `dns_recon.py`)
-`hunter` → maps to `modules.hunter_lookup` (should be `modules/metadata_hunter.py`)
+`crt` → apunta a `modules.crt_sh` (el archivo no existe; debería ser `modules/crt_sh.py` o redirigir a `dns_recon.crt_sh` dentro de `dns_recon.py`)
+`hunter` → apunta a `modules.hunter_lookup` (debería ser `modules/metadata_hunter.py`)
 
-Both fail gracefully (logged as `not_implemented`, scan continues). Fix before relying on these.
+Ambos fallan silenciosamente (se loguean como `not_implemented`, el escaneo continúa). Arreglar antes de confiar en estos módulos.
 
-## API keys (env vars, no .env file)
+## API keys (variables de entorno, sin archivo .env)
 
-| Module | Env var(s) |
+| Módulo | Variable(s) de entorno |
 |---|---|
 | censys | `CENSYS_API_ID`, `CENSYS_API_SECRET` |
 | shodan | `SHODAN_API_KEY` |
 | hunter | `HUNTER_API_KEY` |
 
-Default modules (no keys): dns, whois, crt, wayback.
+Módulos por defecto (sin API keys): dns, whois, crt, wayback.
 
-## Module contract
+## Contrato de módulos
 
-Every module in `condor-cli/modules/` exposes `run(target, timeout)` returning a dict.
+Todo módulo en `condor-cli/modules/` expone `run(target, timeout)` que retorna un `dict`.
 
-## No CI, no tests, no lint/typecheck
+## Sin CI, sin tests, sin linter/typecheck
 
-No test files, no CI workflows, no formatter or type checker config. The repo has a single commit history.
+No hay archivos de test, workflows de CI, ni configuración de formateador/type checker. El repo tiene un único historial de commits.
 
 ## Git
 
-Author commits as `VillaAlexTor <153693343+VillaAlexTor@users.noreply.github.com>`. Remote: `origin/main` only.
+El autor firma como `VillaAlexTor <153693343+VillaAlexTor@users.noreply.github.com>`. Remote: solo `origin/main`.
