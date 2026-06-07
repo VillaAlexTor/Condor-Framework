@@ -169,6 +169,7 @@ condor-framework/
 │
 ├── condor-dashboard/           ← Módulo 2: Dashboard React
 │   ├── src/
+│   │   ├── App.jsx
 │   │   ├── components/
 │   │   │   ├── NetworkGraph/
 │   │   │   ├── PortTable/
