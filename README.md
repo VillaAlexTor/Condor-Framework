@@ -155,13 +155,13 @@ condor-framework/
 ├── condor-cli/                 ← Módulo 1: CLI Python
 │   ├── condor.py               ← Entrypoint principal
 │   ├── modules/
-│   │   ├── dns_recon.py
-│   │   ├── whois_lookup.py
 │   │   ├── censys_query.py
+│   │   ├── dns_recon.py 
+│   │   ├── metadata_hunter.py
 │   │   ├── shodan_query.py
-│   │   ├── crt_sh.py
 │   │   ├── wayback.py
-│   │   └── metadata_hunter.py
+│   │   ├── whois_lookup.py 
+│   │   └── crt_sh.py
 │   ├── output/
 │   │   ├── templates/          ← Jinja2 HTML templates
 │   │   └── schemas/            ← JSON schemas de output
