@@ -161,7 +161,6 @@ condor-framework/
 │   │   ├── shodan_query.py
 │   │   ├── wayback.py
 │   │   ├── whois_lookup.py 
-│   │   └── crt_sh.py
 │   ├── output/
 │   │   ├── templates/          ← Jinja2 HTML templates
 │   │   └── schemas/            ← JSON schemas de output
