@@ -1,0 +1,29 @@
+# ╔══════════════════════════════════════════════════════╗
+# ║       CÓNDOR FRAMEWORK — condor-cli/requirements.txt ║
+# ╚══════════════════════════════════════════════════════╝
+#
+# Instalación:
+#   pip install -r requirements.txt
+#
+# Versiones fijadas para reproducibilidad.
+# Probado con Python 3.11+
+
+# ── DNS ─────────────────────────────────────
+dnspython==2.6.1          # Consultas DNS (A, MX, NS, TXT, CNAME)
+
+# ── WHOIS ───────────────────────────────────
+python-whois==0.9.4       # Parser WHOIS multi-registrar
+
+# ── HTTP (Wayback, crt.sh, Hunter, APIs) ────
+requests==2.32.3          # Cliente HTTP principal
+urllib3==2.2.1            # Dependencia de requests (fijada por seguridad)
+
+# ── Variables de entorno ─────────────────────
+python-dotenv==1.0.1      # Carga .env automáticamente al importar
+
+# ── Output / Formatting ──────────────────────
+rich==13.7.1              # Tablas y colores en terminal (opcional pero bonito)
+jinja2==3.1.4             # Templates HTML para output --format html
+
+# ── Utilidades ───────────────────────────────
+python-dateutil==2.9.0    # Parsing robusto de fechas (WHOIS tiene formatos raros)
