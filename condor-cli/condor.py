@@ -1,32 +1,3 @@
-#!/usr/bin/env python3
-"""
-╔══════════════════════════════════════════════════════╗
-║                     condor.py                        ║
-║        Entrypoint principal del CLI de OSINT         ║
-║  Uso   : python condor.py --target ejemplo.bo        ║
-╚══════════════════════════════════════════════════════╝
-
-DESCRIPCIÓN:
-  Orquestador principal. Recibe argumentos del usuario,
-  ejecuta los módulos de reconocimiento seleccionados,
-  agrega los resultados y genera el output (JSON o HTML).
-
-MÓDULOS DISPONIBLES:
-  dns     → Registros DNS (A, MX, NS, TXT, CNAME)
-  whois   → Información WHOIS del dominio
-  crt     → Subdominios via Certificate Transparency (crt.sh)
-  censys  → Puertos y servicios via Censys.io API
-  shodan  → Banners y tecnologías via Shodan API
-  wayback → URLs históricas via Wayback Machine
-  hunter  → Emails corporativos via Hunter.io API
-
-USO:
-  python condor.py --target ejemplo.bo
-  python condor.py --target ejemplo.bo --modules dns,whois,crt
-  python condor.py --target ejemplo.bo --format html --output reporte.html
-  python condor.py --target ejemplo.bo --verbose --log condor.log
-"""
-
 import argparse
 import json
 import sys
@@ -36,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 
 # ─────────────────────────────────────────────
-#  Colores para la terminal (sin dependencias)
+#  Colores de la Terminal
 # ─────────────────────────────────────────────
 class Color:
     RED     = "\033[91m"
@@ -71,7 +42,6 @@ BANNER = f"""
 #  Módulos disponibles
 #  Cada entrada: nombre_clave → (función_importar, descripción)
 #  La función se importa solo si el módulo es requerido
-#  (evita fallos si faltan dependencias opcionales)
 # ─────────────────────────────────────────────
 AVAILABLE_MODULES = {
     "dns":     "Registros DNS  (A, MX, NS, TXT, CNAME)",
@@ -82,19 +52,13 @@ AVAILABLE_MODULES = {
     "wayback": "Wayback Machine (URLs históricas del dominio)",
     "hunter":  "Hunter.io API  (emails corporativos filtrados)    [requiere API key]",
 }
-
-DEFAULT_MODULES = ["dns", "whois", "crt", "wayback"]  # Módulos sin API key
-
+# Módulos sin API key que se ejecutan por defecto
+DEFAULT_MODULES = ["dns", "whois", "crt", "wayback"]  
 
 # ─────────────────────────────────────────────
 #  Configuración de logging
 # ─────────────────────────────────────────────
 def setup_logging(verbose: bool, log_file: str | None) -> logging.Logger:
-    """
-    Configura el logger principal de Cóndor.
-    - verbose=True  → muestra DEBUG en consola
-    - log_file      → además escribe en archivo
-    """
     logger = logging.getLogger("condor")
     level = logging.DEBUG if verbose else logging.INFO
     logger.setLevel(level)
@@ -126,8 +90,7 @@ def setup_logging(verbose: bool, log_file: str | None) -> logging.Logger:
 def build_parser() -> argparse.ArgumentParser:
     """
     Define todos los argumentos que acepta condor.py.
-    
-    argparse genera automáticamente --help con las descripciones.
+    argparse puede generar automáticamente --help con las siguientes descripciones.
     Cada argumento tiene:
       - flags        : --target, -t  (la forma corta es opcional)
       - type         : str, int, etc.
