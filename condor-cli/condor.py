@@ -90,9 +90,9 @@ def setup_logging(verbose: bool, log_file: str | None) -> logging.Logger:
 def build_parser() -> argparse.ArgumentParser:
     """
     Define todos los argumentos que acepta condor.py.
-    argparse puede generar automáticamente --help con las siguientes descripciones.
-    Cada argumento tiene:
-      - flags        : --target, -t  (la forma corta es opcional)
+    argparse puede llegar a generar automáticamente --help con las siguientes descripciones.
+    Donde cada argumento tiene:
+      - flags        : --target, -t
       - type         : str, int, etc.
       - default      : valor si no se especifica
       - help         : descripción para --help
@@ -119,7 +119,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--target", "-t",
         type=str,
-        required=False,          # No required porque --list-modules no necesita target
+        required=False,   
         metavar="DOMINIO",
         help="Dominio objetivo del reconocimiento. Ej: ejemplo.bo"
     )
@@ -288,7 +288,7 @@ def load_module(name: str):
         mod = importlib.import_module(module_map[name])
         return mod
     except ImportError as e:
-        return None  # Se maneja en run_modules()
+        return None  
 
 
 # ─────────────────────────────────────────────
