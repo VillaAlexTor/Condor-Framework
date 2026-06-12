@@ -1,0 +1,21 @@
+{
+  "name": "condor-report-frontend",
+  "version": "0.1.0",
+  "description": "Cóndor Framework — UI para generar fichas CVSS 3.1 y exportar informes PDF",
+  "author": "Alexander Villarroel Torrico <alexvillarroeltorrico@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev":     "vite --port 5174",
+    "build":   "vite build",
+    "preview": "vite preview --port 5174"
+  },
+  "dependencies": {
+    "vue": "^3.4.31"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite":               "^5.3.1"
+  }
+}
