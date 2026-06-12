@@ -1,0 +1,26 @@
+{
+  "name": "condor-report-backend",
+  "version": "0.1.0",
+  "description": "Cóndor Framework — API backend para generación de informes con fichas CVSS 3.1 y export PDF",
+  "author": "Alexander Villarroel Torrico <alexvillarroeltorrico@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "main": "src/server.js",
+  "scripts": {
+    "dev":   "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test:cvss": "node -e \"console.log(JSON.stringify(require('./src/cvss/calculator').runSelfTest(), null, 2))\""
+  },
+  "dependencies": {
+    "express":   "^4.19.2",
+    "cors":      "^2.8.5",
+    "dotenv":    "^16.4.5",
+    "puppeteer": "^22.12.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
