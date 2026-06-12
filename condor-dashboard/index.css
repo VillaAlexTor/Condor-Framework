@@ -1,0 +1,77 @@
+/**
+ * ╔══════════════════════════════════════════════════════╗
+ * ║   CÓNDOR FRAMEWORK — condor-dashboard/src/index.css  ║
+ * ║   Estilos globales + Tailwind                        ║
+ * ╚══════════════════════════════════════════════════════╝
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Reset y base ── */
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0a0e17;
+  color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Tipografía monospace para datos técnicos ── */
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── Scrollbar oscuro (estética terminal) ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0e17;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ── Selección de texto con acento verde ── */
+::selection {
+  background: rgba(0, 255, 136, 0.25);
+  color: #ffffff;
+}
+
+/* ── Animación de pulso para indicadores de riesgo ── */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ── Transiciones suaves por defecto en interactivos ── */
+button, a {
+  transition: all 0.15s ease;
+}
+
+/* ── line-clamp utility (por si Tailwind no lo trae) ── */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
