@@ -1,0 +1,97 @@
+# ╔══════════════════════════════════════════════════════╗
+# ║       CÓNDOR FRAMEWORK — .gitignore (raíz)           ║
+# ╚══════════════════════════════════════════════════════╝
+
+# ═══════════════════════════════════════════════
+#  SECRETOS — NUNCA subir API keys
+# ═══════════════════════════════════════════════
+.env
+.env.local
+.env.*.local
+condor-cli/.env
+condor-report/backend/.env
+condor-report/frontend/.env
+
+# ═══════════════════════════════════════════════
+#  CONDOR-CLI (Python)
+# ═══════════════════════════════════════════════
+condor-cli/__pycache__/
+condor-cli/**/__pycache__/
+condor-cli/*.pyc
+condor-cli/.venv/
+condor-cli/venv/
+condor-cli/env/
+
+# Reportes generados (pueden contener datos sensibles
+# de objetivos de auditoría — no deben quedar en el repo)
+condor-cli/output/
+condor-cli/*.json
+condor-cli/*.html
+condor-cli/*.log
+!condor-cli/output/.gitkeep
+
+# ═══════════════════════════════════════════════
+#  CONDOR-DASHBOARD (React + Vite)
+# ═══════════════════════════════════════════════
+condor-dashboard/node_modules/
+condor-dashboard/dist/
+condor-dashboard/dist-ssr/
+condor-dashboard/.vite/
+condor-dashboard/*.local
+
+# ═══════════════════════════════════════════════
+#  CONDOR-REPORT (Node + Vue + Express)
+# ═══════════════════════════════════════════════
+
+# Backend
+condor-report/backend/node_modules/
+condor-report/backend/output/
+condor-report/backend/*.pdf
+!condor-report/backend/output/.gitkeep
+
+# Frontend
+condor-report/frontend/node_modules/
+condor-report/frontend/dist/
+condor-report/frontend/.vite/
+
+# PDFs generados (pueden contener hallazgos de auditorías reales)
+*.pdf
+!docs/**/*.pdf
+
+# ═══════════════════════════════════════════════
+#  GENERAL — Node.js
+# ═══════════════════════════════════════════════
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+
+# ═══════════════════════════════════════════════
+#  GENERAL — Editores e IDEs
+# ═══════════════════════════════════════════════
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ═══════════════════════════════════════════════
+#  GENERAL — Sistema Operativo
+# ═══════════════════════════════════════════════
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ═══════════════════════════════════════════════
+#  Docker
+# ═══════════════════════════════════════════════
+*.local.yml
+
+# ═══════════════════════════════════════════════
+#  Logs generales
+# ═══════════════════════════════════════════════
+logs/
+*.log
