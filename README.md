@@ -215,13 +215,14 @@ condor-framework/
 ├── README.md                     ✅
 │
 ├── condor-cli/
-│   ├── condor.py                 ✅ FUNCIONA (lo viste corriendo)
+│   ├── condor.py                 ✅
 │   ├── requirements.txt          ✅
 │   ├── .env.example              ✅
 │   └── modules/
 │       ├── dns_recon.py          ✅
 │       ├── whois_lookup.py       ✅
 │       ├── wayback.py            ✅
+│       ├── crt_sh.py             ✅ (recién)
 │       ├── censys_query.py       ✅
 │       ├── shodan_query.py       ✅
 │       └── hunter_lookup.py      ✅
@@ -230,10 +231,11 @@ condor-framework/
 │   ├── package.json              ✅
 │   ├── vite.config.js            ✅
 │   ├── tailwind.config.js        ✅
-│   ├── index.html                ✅ (recién generado)
+│   ├── postcss.config.js         ✅ (recién)
+│   ├── index.html                ✅
 │   └── src/
-│       ├── main.jsx              ✅ (recién generado)
-│       ├── index.css             ✅ (recién generado)
+│       ├── main.jsx              ✅
+│       ├── index.css             ✅
 │       ├── App.jsx               ✅
 │       └── components/
 │           ├── Overview.jsx      ✅
@@ -265,7 +267,7 @@ condor-framework/
     └── frontend/
         ├── package.json          ✅
         ├── vite.config.js        ✅
-        ├── index.html            ✅ (recién generado)
+        ├── index.html            ✅
         ├── main.js               ✅
         ├── App.vue               ✅
         └── components/
@@ -273,7 +275,6 @@ condor-framework/
             ├── FichaEditor.vue   ✅
             ├── CvssCalculator.vue✅
             └── ReportPreview.vue ✅
----
 ---
 
 ## Flujo de trabajo completo
