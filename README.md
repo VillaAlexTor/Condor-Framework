@@ -215,13 +215,13 @@ condor-framework/
 ├── README.md                     ✅
 │
 ├── condor-cli/
-│   ├── condor.py                 ✅
-│   ├── requirements.txt          ✅
-│   ├── .env.example              ✅
+│   ├── condor.py                 
+│   ├── requirements.txt          
+│   ├── .env.example              
 │   └── modules/
-│       ├── dns_recon.py          ✅
-│       ├── whois_lookup.py       ✅
-│       ├── wayback.py            ✅
+│       ├── dns_recon.py          
+│       ├── whois_lookup.py       
+│       ├── wayback.py            
 │       ├── crt_sh.py             
 │       ├── censys_query.py       
 │       ├── shodan_query.py       
