@@ -261,20 +261,20 @@ condor-framework/
     │       ├── generators/
     │       │   └── pdf.js        ✅
     │       └── routes/
-    │           ├── report.js     ✅
-    │           ├── cvss.js       ✅
-    │           └── ficha.js      ✅
+    │           ├── report.js     
+    │           ├── cvss.js       
+    │           └── ficha.js      
     └── frontend/
-        ├── package.json          ✅
-        ├── vite.config.js        ✅
-        ├── index.html            ✅
-        ├── main.js               ✅
-        ├── App.vue               ✅
+        ├── package.json          
+        ├── vite.config.js        
+        ├── index.html            
+        ├── main.js               
+        ├── App.vue               
         └── components/
-            ├── ImportPanel.vue   ✅
-            ├── FichaEditor.vue   ✅
-            ├── CvssCalculator.vue✅
-            └── ReportPreview.vue ✅
+            ├── ImportPanel.vue   
+            ├── FichaEditor.vue   
+            ├── CvssCalculator.vue
+            └── ReportPreview.vue 
 ---
 
 ## Flujo de trabajo completo
