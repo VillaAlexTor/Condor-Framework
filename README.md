@@ -231,35 +231,35 @@ condor-framework/
 │   ├── package.json              ✅
 │   ├── vite.config.js            ✅
 │   ├── tailwind.config.js        ✅
-│   ├── postcss.config.js         ✅ (recién)
-│   ├── index.html                ✅
+│   ├── postcss.config.js        
+│   ├── index.html                
 │   └── src/
-│       ├── main.jsx              ✅
-│       ├── index.css             ✅
-│       ├── App.jsx               ✅
+│       ├── main.jsx              
+│       ├── index.css             
+│       ├── App.jsx               
 │       └── components/
-│           ├── Overview.jsx      ✅
-│           ├── DnsView.jsx       ✅
-│           ├── WhoisView.jsx     ✅
-│           ├── WaybackView.jsx   ✅
-│           ├── CensysView.jsx    ✅
-│           ├── ShodanView.jsx    ✅
-│           └── HunterView.jsx    ✅
+│           ├── Overview.jsx      
+│           ├── DnsView.jsx       
+│           ├── WhoisView.jsx     
+│           ├── WaybackView.jsx   
+│           ├── CensysView.jsx    
+│           ├── ShodanView.jsx    
+│           └── HunterView.jsx    
 │
 └── condor-report/
-    ├── README.md                 ✅
+    ├── README.md                 
     ├── backend/
-    │   ├── package.json          ✅
+    │   ├── package.json          
     │   └── src/
-    │       ├── server.js         ✅
+    │       ├── server.js         
     │       ├── cvss/
-    │       │   ├── calculator.js ✅
-    │       │   └── vectors.js    ✅
+    │       │   ├── calculator.js 
+    │       │   └── vectors.js    
     │       ├── lib/
-    │       │   ├── importer.js   ✅
-    │       │   └── recommender.js✅
+    │       │   ├── importer.js   
+    │       │   └── recommender.js
     │       ├── generators/
-    │       │   └── pdf.js        ✅
+    │       │   └── pdf.js        
     │       └── routes/
     │           ├── report.js     
     │           ├── cvss.js       
