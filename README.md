@@ -210,9 +210,9 @@ condor-framework/
 
 ---
 condor-framework/
-├── .gitignore                    ✅
-├── docker-compose.yml            ✅
-├── README.md                     ✅
+├── .gitignore                    
+├── docker-compose.yml            
+├── README.md                     
 │
 ├── condor-cli/
 │   ├── condor.py                 
