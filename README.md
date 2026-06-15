@@ -222,15 +222,15 @@ condor-framework/
 │       ├── dns_recon.py          ✅
 │       ├── whois_lookup.py       ✅
 │       ├── wayback.py            ✅
-│       ├── crt_sh.py             ✅ (recién)
-│       ├── censys_query.py       ✅
-│       ├── shodan_query.py       ✅
-│       └── hunter_lookup.py      ✅
+│       ├── crt_sh.py             
+│       ├── censys_query.py       
+│       ├── shodan_query.py       
+│       └── hunter_lookup.py      
 │
 ├── condor-dashboard/
-│   ├── package.json              ✅
-│   ├── vite.config.js            ✅
-│   ├── tailwind.config.js        ✅
+│   ├── package.json              
+│   ├── vite.config.js            
+│   ├── tailwind.config.js        
 │   ├── postcss.config.js        
 │   ├── index.html                
 │   └── src/
