@@ -509,3 +509,9 @@ ESTRUCTURA DEL OUTPUT:
     }
   }
 
+╔══════════════════════════════════════════════════════╗
+║   CÓNDOR FRAMEWORK — condor-dashboard/src/main.jsx   ║
+║   Entrypoint de la aplicación React                  ║
+╚══════════════════════════════════════════════════════╝
+Monta App.jsx en el DOM e importa los estilos globales
+(Tailwind + fuentes).
