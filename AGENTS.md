@@ -9,8 +9,8 @@ Monorepo en etapa temprana. Solo **`condor-cli/`** tiene código; `condor-dashbo
 ```bash
 # Desde la raíz del repo o condor-cli/
 python condor-cli/condor.py --target ejemplo.bo              # default: dns,whois,crt,wayback
-python condor-cli/condor.py --target ej.bo --all-modules     # necesita todas las API keys
-python condor-cli/condor.py --target ej.bo --format html -o report.html
+python condor-cli/condor.py --target ej.com --all-modules     # necesita todas las API keys
+python condor-cli/condor.py --target ej.com --format html -o report.html
 python condor-cli/condor.py --list-modules
 ```
 
