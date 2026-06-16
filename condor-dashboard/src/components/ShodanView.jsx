@@ -1,24 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║   CÓNDOR FRAMEWORK — components/ShodanView.jsx       ║
- * ║   Vista detallada del módulo Shodan                  ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * DESCRIPCIÓN:
- *   Visualización completa de los resultados del módulo shodan_query.
- *   Muestra:
- *     - Hosts indexados con OS, org, ASN, geolocalización
- *     - CVEs detectados por Shodan con CVSS 3.1 y severidad
- *     - Banners de servicios con versiones de software
- *     - Gráfico de distribución de CVEs por severidad
- *     - Top vulnerabilidades ordenadas por CVSS score
- *     - Software expuesto con versiones
- *
- * PROPS:
- *   data   → results.shodan del reporte condor-cli
- *   report → reporte completo
- */
-
 import { useState, useMemo } from "react"
 
 // ─────────────────────────────────────────────
