@@ -16,7 +16,7 @@
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝ ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
 ```
 
-**Reconocimiento Pasivo de Extremo a Extremo**
+**Herramienta de Reconocimiento Pasivo**
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org)
@@ -95,16 +95,16 @@ Motor de recolección pasiva de inteligencia. Script Python con interfaz de lín
 
 ```bash
 # Uso básico
-python condor.py --target ejemplo.bo --output recon_ejemplo.json
+python condor.py --target ejemplo.com --output recon_ejemplo.json
 
 # Con módulos específicos
-python condor.py --target ejemplo.bo --modules dns,whois,censys,crt
+python condor.py --target ejemplo.com --modules dns,whois,censys,crt
 
 # Output HTML standalone
-python condor.py --target ejemplo.bo --format html --output reporte.html
+python condor.py --target ejemplo.com --format html --output reporte.html
 
 # Verbose + guardar logs
-python condor.py --target ejemplo.bo --verbose --log condor.log
+python condor.py --target ejemplo.com --verbose --log condor.log
 ```
 
 **Tecnologías:** Python 3.11+, `argparse`, `dnspython`, `python-whois`, `requests`, `rich` (CLI styling), `jinja2` (HTML output)
