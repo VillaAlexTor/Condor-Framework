@@ -1,22 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║   CÓNDOR FRAMEWORK — components/Overview.jsx         ║
- * ║   Vista principal — métricas globales y resumen      ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * DESCRIPCIÓN:
- *   Vista de resumen ejecutivo. Muestra de un vistazo:
- *     - Métricas globales del escaneo
- *     - Tarjeta de riesgo por módulo
- *     - Hallazgos críticos consolidados
- *     - Timeline del objetivo (WHOIS + Wayback)
- *     - Botones de navegación a cada módulo
- *
- * PROPS:
- *   data       → el report completo (meta + results + errors)
- *   onNavigate → función para navegar a otra vista
- */
-
 import { useMemo } from "react"
 
 // ─────────────────────────────────────────────
