@@ -214,3 +214,86 @@ ESTRUCTURA DEL OUTPUT:
       "has_dkim": bool
     }
   }
+
+╔══════════════════════════════════════════════════════╗
+║      CÓNDOR FRAMEWORK — modules/hunter_lookup.py     ║
+║    Reconocimiento de emails corporativos via Hunter  ║
+╚══════════════════════════════════════════════════════╝
+
+DESCRIPCIÓN:
+  Módulo de reconocimiento de emails. Consulta la API de
+  Hunter.io para descubrir emails corporativos asociados
+  al dominio objetivo, el patrón de formato que usan y
+  las fuentes públicas donde fueron encontrados.
+
+  Hunter.io agrega emails de fuentes públicas: sitios web,
+  documentos PDF, GitHub, LinkedIn, etc. Nosotros consultamos
+  su índice — no hacemos scraping directo del objetivo.
+
+  Descubre:
+    - Emails corporativos verificados y no verificados
+    - Patrón de formato: {first}.{last}@empresa.com
+    - Nombres y cargos de empleados (si están disponibles)
+    - Fuentes donde fue encontrado cada email
+    - Confianza del email (score 0-100)
+    - Departamentos de la organización
+    - Total de emails indexados por Hunter
+
+  Relevancia para OSINT:
+    - Superficie de ataque para phishing dirigido (spear phishing)
+    - Identificación de personal clave (IT, RRHH, Dirección)
+    - El patrón permite construir listas de emails probables
+    - Emails + LinkedIn = perfil completo de empleado
+
+DEPENDENCIAS:
+  pip install requests
+
+API KEY (gratuita con limitaciones):
+  1. Registrarse en https://hunter.io/users/sign_up
+  2. Ir a https://hunter.io/api-keys
+  3. Copiar la API key
+  4. Guardar en condor-cli/.env:
+       HUNTER_API_KEY=tu_api_key
+
+  Plan gratuito: 25 búsquedas/mes — suficiente para uso académico.
+
+CONTRATO CON condor.py:
+  Debe exponer: run(target: str, timeout: int) -> dict
+  El dict retornado se almacena en report["results"]["hunter"]
+
+ESTRUCTURA DEL OUTPUT:
+  {
+    "domain":          str,
+    "organization":    str,       # Nombre de la empresa
+    "pattern":         str,       # Ej: "{first}.{last}"
+    "total_emails":    int,       # Total indexado por Hunter
+    "emails": [
+      {
+        "value":        str,      # email@dominio.com
+        "type":         str,      # personal / generic
+        "confidence":   int,      # 0-100
+        "verified":     bool,
+        "first_name":   str,
+        "last_name":    str,
+        "position":     str,      # Cargo/título
+        "department":   str,
+        "sources":      [str],    # URLs donde fue encontrado
+        "last_found":   str,      # Fecha última aparición
+      }
+    ],
+    "departments":     {str: int},# Conteo por departamento
+    "risk_emails": {
+      "it_staff":       [str],    # IT y seguridad — alto valor
+      "executives":     [str],    # Dirección — alto valor
+      "generic":        [str],    # info@, contact@ — bajo valor
+    },
+    "analysis": {
+      "risk_level":           str,
+      "has_pattern":          bool,
+      "pattern_description":  str,
+      "total_exposed":        int,
+      "high_value_targets":   int,
+      "phishing_risk":        str,
+      "recommended_actions":  [str],
+    }
+  }
