@@ -515,3 +515,9 @@ ESTRUCTURA DEL OUTPUT:
 ╚══════════════════════════════════════════════════════╝
 Monta App.jsx en el DOM e importa los estilos globales
 (Tailwind + fuentes).
+
+╔══════════════════════════════════════════════════════╗
+║  CÓNDOR FRAMEWORK — condor-dashboard/postcss.config.js║
+╚══════════════════════════════════════════════════════╝
+  PostCSS procesa el CSS antes de que Vite lo sirva.
+  Tailwind necesita este archivo para inyectar sus utilidades.
