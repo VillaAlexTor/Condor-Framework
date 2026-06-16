@@ -1,24 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║   CÓNDOR FRAMEWORK — components/CensysView.jsx       ║
- * ║   Vista detallada del módulo Censys                  ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * DESCRIPCIÓN:
- *   Visualización completa de los resultados del módulo censys_query.
- *   Muestra:
- *     - Hosts descubiertos con sus IPs y hostnames
- *     - Puertos abiertos por host con servicios detectados
- *     - Certificados TLS (CN, SANs, emisor, expiración)
- *     - Puertos peligrosos expuestos
- *     - Issues de TLS (expirados, autofirmados)
- *     - Mapa visual de puertos por host
- *
- * PROPS:
- *   data   → results.censys del reporte condor-cli
- *   report → reporte completo
- */
-
 import { useState, useMemo } from "react"
 
 // ─────────────────────────────────────────────
