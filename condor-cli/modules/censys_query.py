@@ -13,7 +13,7 @@ CENSYS_HOSTS_SEARCH = f"{CENSYS_API_BASE}/hosts/search"
 CENSYS_HOST_DETAIL  = f"{CENSYS_API_BASE}/hosts/{{ip}}"
 
 # ─────────────────────────────────────────────
-#  Puertos críticos — su exposición es hallazgo
+#  Puertos críticos
 # ─────────────────────────────────────────────
 CRITICAL_PORTS = {
     21:   "FTP — transferencia de archivos sin cifrado",
