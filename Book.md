@@ -59,3 +59,11 @@ retornarán status: "skipped" sin romper el escaneo.#
 Los módulos sin API key (dns, whois, wayback, crt)
 funcionan sin configuración adicional.
  ────────────────────────────────────────────────────────
+
+╔══════════════════════════════════════════════════════╗
+║       CÓNDOR FRAMEWORK — condor-cli/requirements.txt ║
+╚══════════════════════════════════════════════════════╝
+Instalación:
+  pip install -r requirements.txt
+Versiones fijadas para reproducibilidad.
+  Probado con Python 3.11+
