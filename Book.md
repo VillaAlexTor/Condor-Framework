@@ -44,3 +44,18 @@ USO:
    Dashboard:        http://localhost:5173
    Report Frontend:  http://localhost:5174
    Report Backend:   http://localhost:3001
+
+╔══════════════════════════════════════════════════════╗
+║      CÓNDOR FRAMEWORK — condor-cli/.env.example      ║
+╚══════════════════════════════════════════════════════╝
+
+INSTRUCCIONES:
+   1. Copiar este archivo: cp .env.example .env#
+   2. Completar los valores reales en .env
+   3. NUNCA subir .env a GitHub — ya está en .gitignore
+
+ Los módulos que no tengan API key configurada
+ retornarán status: "skipped" sin romper el escaneo.#
+  Los módulos sin API key (dns, whois, wayback, crt)
+ funcionan sin configuración adicional.
+ ────────────────────────────────────────────────────────
