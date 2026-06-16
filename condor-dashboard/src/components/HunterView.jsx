@@ -1,24 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║   CÓNDOR FRAMEWORK — components/HunterView.jsx       ║
- * ║   Vista detallada del módulo Hunter.io               ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * DESCRIPCIÓN:
- *   Visualización completa de los resultados del módulo hunter_lookup.
- *   Muestra:
- *     - Patrón de formato de emails corporativos
- *     - Clasificación: IT staff / Ejecutivos / Genéricos
- *     - Lista de emails con cargo, departamento y confianza
- *     - Distribución por departamento
- *     - Fuentes donde fueron encontrados
- *     - Análisis de riesgo de phishing y recomendaciones
- *
- * PROPS:
- *   data   → results.hunter del reporte condor-cli
- *   report → reporte completo
- */
-
 import { useState, useMemo } from "react"
 
 // ─────────────────────────────────────────────
