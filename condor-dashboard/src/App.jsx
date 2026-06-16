@@ -1,24 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║      CÓNDOR FRAMEWORK — condor-dashboard/App.jsx     ║
- * ║         Componente raíz — layout y navegación        ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * DESCRIPCIÓN:
- *   Componente principal del dashboard. Maneja:
- *     1. Carga del JSON generado por condor-cli
- *     2. Estado global del reporte
- *     3. Layout principal (sidebar + contenido)
- *     4. Navegación entre vistas (Overview, DNS, WHOIS, etc.)
- *
- * ESTÉTICA:
- *   Dark terminal — inspirado en interfaces de seguridad reales.
- *   Paleta: fondo casi negro (#0a0e17), verde neón (#00ff88),
- *   cyan (#00d4ff), rojo alerta (#ff3b3b).
- *   Tipografía: JetBrains Mono (monospace) para datos técnicos,
- *   Syne para headers — contraste legible/display.
- */
-
 import { useState, useCallback } from "react"
 import Overview    from "./components/Overview"
 import DnsView     from "./components/DnsView"
