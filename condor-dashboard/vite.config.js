@@ -1,13 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║   CÓNDOR FRAMEWORK — condor-dashboard/vite.config.js ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * Configuración Vite para el dashboard React.
- * Puerto 5173 (default de Vite) — consume JSON local,
- * no necesita proxy a ningún backend.
- */
-
 import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 

@@ -521,3 +521,10 @@ Monta App.jsx en el DOM e importa los estilos globales
 ╚══════════════════════════════════════════════════════╝
   PostCSS procesa el CSS antes de que Vite lo sirva.
   Tailwind necesita este archivo para inyectar sus utilidades.
+
+╔══════════════════════════════════════════════════════╗
+║   CÓNDOR FRAMEWORK — condor-dashboard/vite.config.js ║
+╚══════════════════════════════════════════════════════╝
+  Configuración Vite para el dashboard React.
+  Puerto 5173 (default de Vite) — consume JSON local,
+  no necesita proxy a ningún backend.
