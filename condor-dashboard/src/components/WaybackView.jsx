@@ -1,23 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║   CÓNDOR FRAMEWORK — components/WaybackView.jsx      ║
- * ║   Vista detallada del módulo Wayback Machine         ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * DESCRIPCIÓN:
- *   Visualización completa de los resultados del módulo wayback.
- *   Muestra:
- *     - Resumen temporal (primera/última captura, años de historial)
- *     - Hallazgos críticos: archivos sensibles, backups, paneles admin, APIs
- *     - Distribución de URLs por extensión (gráfico de barras)
- *     - Lista completa de URLs con buscador y filtros
- *     - Distribución de códigos HTTP históricos
- *
- * PROPS:
- *   data   → results.wayback del reporte condor-cli
- *   report → reporte completo
- */
-
 import { useState, useMemo } from "react"
 
 // ─────────────────────────────────────────────
