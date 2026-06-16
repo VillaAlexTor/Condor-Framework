@@ -654,3 +654,22 @@ Monta App.jsx en el DOM e importa los estilos globales
   PROPS:
     data   → results.wayback del reporte condor-cli
     report → reporte completo
+
+╔══════════════════════════════════════════════════════╗
+║ CÓNDOR FRAMEWORK — components/WhoisView.jsx        ║
+║   Vista detallada del módulo WHOIS                   ║
+╚══════════════════════════════════════════════════════╝
+ 
+  DESCRIPCIÓN:
+   Visualización completa de los resultados del módulo whois_lookup.
+    Muestra:
+      - Datos del registrante (nombre, org, email, país)
+      - Fechas de registro, actualización y expiración
+      - Barra visual de vida útil del dominio
+      - Estado del dominio y nameservers
+      - Detección de WHOIS Privacy
+      - Análisis de riesgo (expiración, privacidad)
+ 
+  PROPS:
+    data   → results.whois del reporte condor-cli
+    report → reporte completo
