@@ -175,3 +175,42 @@ ESTRUCTURA DEL OUTPUT:
       "interesting":       [str], # Subdominios con nombres sensibles
     }
   }
+
+╔══════════════════════════════════════════════════════╗
+║       CÓNDOR FRAMEWORK — modules/dns_recon.py        ║
+║     Reconocimiento DNS pasivo + crt.sh subdomains    ║
+╚══════════════════════════════════════════════════════╝
+
+DESCRIPCIÓN:
+  Módulo de reconocimiento DNS. Consulta registros públicos
+  del dominio objetivo sin generar tráfico directo hacia él.
+  
+  También consulta crt.sh (Certificate Transparency Logs)
+  para descubrir subdominios registrados históricamente
+  en certificados TLS/SSL públicos.
+
+DEPENDENCIAS:
+  pip install dnspython requests
+
+CONTRATO CON condor.py:
+  Debe exponer: run(target: str, timeout: int) -> dict
+  El dict retornado se almacena en report["results"]["dns"]
+
+ESTRUCTURA DEL OUTPUT:
+  {
+    "records": {
+      "A":     [...],   # IPs del dominio
+      "MX":    [...],   # Servidores de correo
+      "NS":    [...],   # Nameservers autoritativos
+      "TXT":   [...],   # SPF, DMARC, DKIM, verificaciones
+      "CNAME": [...]    # Alias (si aplica)
+    },
+    "subdomains": [...],  # Descubiertos via crt.sh
+    "summary": {
+      "total_records": N,
+      "total_subdomains": N,
+      "has_spf": bool,
+      "has_dmarc": bool,
+      "has_dkim": bool
+    }
+  }
