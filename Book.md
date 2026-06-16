@@ -23,3 +23,24 @@ USO:
   python condor.py --target ejemplo.com --modules dns,whois,crt
   python condor.py --target ejemplo.com --format html --output reporte.html
   python condor.py --target ejemplo.com --verbose --log condor.log
+
+
+╔══════════════════════════════════════════════════════╗
+║   CÓNDOR FRAMEWORK — docker-compose.yml (raíz)       ║
+╚══════════════════════════════════════════════════════╝
+
+Levanta el dashboard y el report generator juntos.
+condor-cli NO se incluye aquí porque es un CLI que se
+ejecuta puntualmente (python condor.py --target ...),
+no un servicio de larga duración.
+
+USO:
+   docker-compose up -d          # Levantar todo
+   docker-compose up dashboard   # Solo el dashboard
+   docker-compose logs -f report-backend
+   docker-compose down
+
+ URLs después de levantar:
+   Dashboard:        http://localhost:5173
+   Report Frontend:  http://localhost:5174
+   Report Backend:   http://localhost:3001
