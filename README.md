@@ -216,7 +216,7 @@ condor-framework/
 1. OBJETIVO DEFINIDO
         │
         ▼
-2. condor-cli --target objetivo.bo --output scan.json
+2. condor-cli --target objetivo.com --output scan.json
    • Consulta DNS, WHOIS, Censys, crt.sh, Wayback...
    • Genera: scan.json
         │
@@ -308,20 +308,6 @@ HIBP_API_KEY=tu_hibp_key
 - ❌ No usar para actividades ilegales o maliciosas
 
 El autor no se responsabiliza por el uso indebido de esta herramienta. Ver [LICENSE](LICENSE) y [ÉTICA.md](docs/etica.md).
-
----
-
-## Roadmap
-
-- [x] Diseño de arquitectura y monorepo
-- [ ] `condor-cli` v0.1 — DNS + WHOIS + crt.sh
-- [ ] `condor-cli` v0.2 — Censys + Shodan + Wayback
-- [ ] `condor-dashboard` v0.1 — Carga JSON + tabla básica
-- [ ] `condor-dashboard` v0.2 — Network graph D3.js
-- [ ] `condor-report` v0.1 — Fichas CVSS + export PDF
-- [ ] `condor-report` v0.2 — Export DOCX + portada automática
-- [ ] Docker Compose completo
-- [ ] Documentación en GitHub Pages
 
 ---
 
