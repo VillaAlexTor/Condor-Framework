@@ -565,3 +565,19 @@ Monta App.jsx en el DOM e importa los estilos globales
   PROPS:
     data   → results.censys del reporte condor-cli
     report → reporte completo
+
+ ╔══════════════════════════════════════════════════════╗
+ ║   CÓNDOR FRAMEWORK — components/DnsView.jsx          ║
+ ║   Vista detallada del módulo DNS                     ║
+ ╚══════════════════════════════════════════════════════╝
+ DESCRIPCIÓN:
+  Visualización completa de los resultados del módulo dns_recon.
+   Muestra:
+     - Registros DNS por tipo (A, MX, NS, TXT, CNAME)
+     - Subdominios descubiertos via crt.sh
+     - Análisis visual de seguridad de email (SPF/DMARC/DKIM)
+     - Evaluación de riesgo de email spoofing
+
+ PROPS:
+    data   → results.dns del reporte condor-cli
+    report → reporte completo (para acceder a meta.target)
