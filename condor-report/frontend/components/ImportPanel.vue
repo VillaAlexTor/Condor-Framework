@@ -1,24 +1,3 @@
-<!--
-╔══════════════════════════════════════════════════════╗
-║  CÓNDOR FRAMEWORK — ImportPanel.vue                  ║
-║  Panel de importación de JSON condor-cli             ║
-╚══════════════════════════════════════════════════════╝
-
-DESCRIPCIÓN:
-  Pantalla inicial de condor-report. Permite:
-    - Drag & drop o selección de archivo JSON de condor-cli
-    - Envío a POST /api/report/import → genera fichas
-    - Validación básica del JSON antes de enviar
-    - Alternativa: empezar desde cero con fichas manuales
-
-PROPS:
-  apiBase — URL base del backend (ej: http://localhost:3001)
-
-EMITS:
-  imported     — { fichas, report_meta, informe_meta, stats }
-  manual-start — target (string) — usuario eligió empezar manualmente
--->
-
 <template>
   <div class="import-panel">
 
