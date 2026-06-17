@@ -143,71 +143,75 @@ Generador de informes de auditoría. Toma los datos del dashboard y produce fich
 
 ---
 condor-framework/
-├── .gitignore                    
-├── docker-compose.yml            
-├── README.md                     
+├── .gitignore
+├── docker-compose.yml
+├── README.md
+├── AGENTS.md
+├── Book.md
+├── guia-de-arranque.md
 │
 ├── condor-cli/
-│   ├── condor.py                 
-│   ├── requirements.txt          
-│   ├── .env.example              
+│   ├── condor.py
+│   ├── requirements.txt
+│   ├── .env.example
 │   └── modules/
-│       ├── dns_recon.py          
-│       ├── whois_lookup.py       
-│       ├── wayback.py            
-│       ├── crt_sh.py             
-│       ├── censys_query.py       
-│       ├── shodan_query.py       
-│       └── hunter_lookup.py      
+│       ├── dns_recon.py
+│       ├── whois_lookup.py
+│       ├── wayback.py
+│       ├── crt_sh.py
+│       ├── censys_query.py
+│       ├── shodan_query.py
+│       └── metadata_hunter.py
 │
 ├── condor-dashboard/
-│   ├── package.json              
-│   ├── vite.config.js            
-│   ├── tailwind.config.js        
-│   ├── postcss.config.js        
-│   ├── index.html                
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   ├── index.html
+│   ├── index.css
+│   ├── main.js
 │   └── src/
-│       ├── main.jsx              
-│       ├── index.css             
-│       ├── App.jsx               
+│       ├── main.jsx
+│       ├── index.css
+│       ├── App.jsx
 │       └── components/
-│           ├── Overview.jsx      
-│           ├── DnsView.jsx       
-│           ├── WhoisView.jsx     
-│           ├── WaybackView.jsx   
-│           ├── CensysView.jsx    
-│           ├── ShodanView.jsx    
-│           └── HunterView.jsx    
+│           ├── Overview.jsx
+│           ├── DnsView.jsx
+│           ├── WhoisView.jsx
+│           ├── WaybackView.jsx
+│           ├── CensysView.jsx
+│           ├── ShodanView.jsx
+│           └── HunterView.jsx
 │
 └── condor-report/
-    ├── README.md                 
+    ├── README.md
     ├── backend/
-    │   ├── package.json          
+    │   ├── package.json
     │   └── src/
-    │       ├── server.js         
     │       ├── cvss/
-    │       │   ├── calculator.js 
-    │       │   └── vectors.js    
+    │       │   ├── calculator.js
+    │       │   └── vectors.js
     │       ├── lib/
-    │       │   ├── importer.js   
+    │       │   ├── importer.js
     │       │   └── recommender.js
     │       ├── generators/
-    │       │   └── pdf.js        
+    │       │   └── pdf.js
     │       └── routes/
-    │           ├── report.js     
-    │           ├── cvss.js       
-    │           └── ficha.js      
+    │           ├── report.js
+    │           ├── cvss.js
+    │           └── ficha.js
     └── frontend/
-        ├── package.json          
-        ├── vite.config.js        
-        ├── index.html            
-        ├── main.js               
-        ├── App.vue               
+        ├── package.json
+        ├── vite.config.js
+        ├── index.html
+        ├── main.js
+        ├── App.vue
         └── components/
-            ├── ImportPanel.vue   
-            ├── FichaEditor.vue   
+            ├── ImportPanel.vue
+            ├── FichaEditor.vue
             ├── CvssCalculator.vue
-            └── ReportPreview.vue 
+            └── ReportPreview.vue
 ---
 
 ## Flujo de trabajo completo
