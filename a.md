@@ -34,14 +34,14 @@ block-beta
 
 | Componente | IaaS | PaaS | SaaS |
 |---|:---:|:---:|:---:|
-| Hardware físico | ☁ Proveedor | ☁ Proveedor | ☁ Proveedor |
-| Virtualización / Hipervisor | ☁ Proveedor | ☁ Proveedor | ☁ Proveedor |
-| Sistema Operativo | 🏛 Carrera | ☁ Proveedor | ☁ Proveedor |
-| Runtime / Middleware | 🏛 Carrera | ☁ Proveedor | ☁ Proveedor |
-| Aplicación / Software | 🏛 Carrera | 🏛 Carrera | ☁ Proveedor |
-| Datos académicos | 🏛 Carrera | 🏛 Carrera | 🏛 Carrera |
-| Seguridad de accesos | 🏛 Carrera | Compartida | ☁ Proveedor |
-| Identidad y usuarios | 🏛 Carrera | 🏛 Carrera | 🏛 Carrera |
+| Hardware físico |  Proveedor |  Proveedor |  Proveedor |
+| Virtualización / Hipervisor |  Proveedor |  Proveedor |  Proveedor |
+| Sistema Operativo |  Carrera |  Proveedor |  Proveedor |
+| Runtime / Middleware |  Carrera |  Proveedor |  Proveedor |
+| Aplicación / Software |  Carrera |  Carrera |  Proveedor |
+| Datos académicos |  Carrera |  Carrera |  Carrera |
+| Seguridad de accesos |  Carrera | Compartida |  Proveedor |
+| Identidad y usuarios |  Carrera |  Carrera |  Carrera |
 
 ### 1.3 Tabla de normas ISO por capa
 
