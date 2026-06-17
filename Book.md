@@ -847,3 +847,13 @@ Monta App.jsx en el DOM e importa los estilos globales
     POST /api/ficha/enrich-all               — enriquece un array de fichas
     POST /api/ficha/general-recommendations  — recomendaciones generales del informe
     POST /api/ficha/new                      — crea ficha vacía lista para editar
+
+ ╔══════════════════════════════════════════════════════╗
+ ║  CÓNDOR FRAMEWORK — backend/src/routes/report.js     ║
+ ║  Rutas: importar JSON condor-cli + generar PDF       ║
+ ╚══════════════════════════════════════════════════════╝
+ 
+  ENDPOINTS:
+    POST /api/report/import    — Importa JSON de condor-cli, genera fichas
+    POST /api/report/generate  — Genera PDF desde fichas + metadata
+    GET  /api/report/download/:filename — (servido como estático en server.js)

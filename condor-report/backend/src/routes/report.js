@@ -1,15 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║  CÓNDOR FRAMEWORK — backend/src/routes/report.js     ║
- * ║  Rutas: importar JSON condor-cli + generar PDF       ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * ENDPOINTS:
- *   POST /api/report/import    — Importa JSON de condor-cli, genera fichas
- *   POST /api/report/generate  — Genera PDF desde fichas + metadata
- *   GET  /api/report/download/:filename — (servido como estático en server.js)
- */
-
 "use strict"
 
 const express = require("express")
