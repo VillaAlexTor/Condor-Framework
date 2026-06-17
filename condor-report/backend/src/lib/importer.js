@@ -1,36 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║   CÓNDOR FRAMEWORK — condor-report/lib/importer.js   ║
- * ║   Parser de JSON condor-cli → fichas automáticas     ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * DESCRIPCIÓN:
- *   Toma el JSON generado por condor-cli y extrae
- *   automáticamente todos los hallazgos de seguridad,
- *   convirtiéndolos en fichas de vulnerabilidad listas
- *   para editar en el FichaEditor.
- *
- *   Procesa todos los módulos:
- *     - dns     → email spoofing (SPF/DMARC/DKIM)
- *     - whois   → expiración de dominio
- *     - wayback → archivos sensibles, backups, paneles admin
- *     - censys  → puertos peligrosos, TLS issues
- *     - shodan  → CVEs detectados, servicios peligrosos
- *     - hunter  → emails IT/ejecutivos expuestos, patrón
- *
- *   Cada hallazgo genera una ficha con:
- *     - ID único (VULN-001, VULN-002, ...)
- *     - Vector CVSS 3.1 sugerido (desde vectors.js presets)
- *     - Descripción y evidencia pre-completadas
- *     - Recomendación base (completada por recommender.js)
- *     - Prioridad calculada desde el CVSS score
- *
- * USO:
- *   const { importFromJson } = require("./importer")
- *   const fichas = importFromJson(reportJson)
- *   // → [{ id: "VULN-001", titulo: "...", cvss: {...}, ... }]
- */
-
 "use strict"
 
 const { calculateFromVector }    = require("../cvss/calculator")
