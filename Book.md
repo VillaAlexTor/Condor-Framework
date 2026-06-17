@@ -704,3 +704,29 @@ Monta App.jsx en el DOM e importa los estilos globales
     // Desde vector string
     const result = calculateFromVector("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
     // → { score: 9.8, severity: "CRÍTICO", ... }
+
+
+ ╔══════════════════════════════════════════════════════╗
+ ║   CÓNDOR FRAMEWORK — condor-report/cvss/vectors.js   ║
+ ║   Definiciones de métricas CVSS 3.1 para la UI       ║
+ ╚══════════════════════════════════════════════════════╝
+ 
+  DESCRIPCIÓN:
+   Definiciones completas de cada métrica del vector CVSS 3.1:
+      - Labels cortos y largos para botones y tooltips
+      - Descripciones técnicas para mostrar al analista
+      - Ejemplos concretos de situaciones reales
+      - Colores por severidad para la UI
+      - Orden canónico del vector string
+ 
+    Este archivo NO hace cálculos — solo define metadata.
+    El cálculo está en calculator.js.
+ 
+  USO:
+    const { METRICS, SEVERITY_DISPLAY, getVectorDescription } = require("./vectors")
+ 
+    // Obtener opciones para el select de AV
+    METRICS.AV.options  // → [{ value: "N", label: "Network", ... }, ...]
+ 
+    // Describir un vector completo
+    getVectorDescription({ AV:"N", AC:"L", PR:"N", UI:"N", S:"U", C:"H", I:"H", A:"H" })
