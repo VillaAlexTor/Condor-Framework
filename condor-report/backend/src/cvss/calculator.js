@@ -1,35 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║   CÓNDOR FRAMEWORK — condor-report/cvss/calculator.js║
- * ║   Motor matemático CVSS 3.1 — especificación FIRST   ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * DESCRIPCIÓN:
- *   Implementación completa del estándar CVSS 3.1 (Common
- *   Vulnerability Scoring System) según la especificación
- *   oficial del FIRST (Forum of Incident Response and
- *   Security Teams).
- *
- *   Referencia: https://www.first.org/cvss/v3.1/specification-document
- *
- *   Calcula:
- *     - Base Score (ISS, Impact, Exploitability)
- *     - Severity label (CRÍTICO / ALTO / MEDIO / BAJO / NINGUNO)
- *     - Vector string canónico (CVSS:3.1/AV:N/AC:L/...)
- *     - Desglose de sub-scores para UI de la calculadora
- *
- * USO:
- *   const { calculate } = require("./calculator")
- *
- *   // Desde métricas individuales
- *   const result = calculate({ AV:"N", AC:"L", PR:"N", UI:"N", S:"U", C:"H", I:"H", A:"H" })
- *   // → { score: 9.8, severity: "CRÍTICO", vector: "CVSS:3.1/AV:N/..." }
- *
- *   // Desde vector string
- *   const result = calculateFromVector("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
- *   // → { score: 9.8, severity: "CRÍTICO", ... }
- */
-
 "use strict"
 
 // ─────────────────────────────────────────────
