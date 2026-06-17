@@ -927,3 +927,25 @@ PROPS:
 EMITS:
   imported     — { fichas, report_meta, informe_meta, stats }
   manual-start — target (string) — usuario eligió empezar manualmente
+
+╔══════════════════════════════════════════════════════╗
+║  CÓNDOR FRAMEWORK — ReportPreview.vue                ║
+║  Preview del informe + exportación PDF               ║
+╚══════════════════════════════════════════════════════╝
+
+DESCRIPCIÓN:
+  Vista final del flujo condor-report. Muestra un preview
+  completo del informe antes de exportar y permite:
+    - Editar la metadata del informe (título, analista, etc.)
+    - Ver resumen de fichas con distribución CVSS
+    - Preview de la portada del informe
+    - Exportar a PDF via API backend
+    - Descargar el PDF generado
+
+PROPS:
+  fichas     — array de fichas enriquecidas
+  reportMeta — metadata del reporte original de condor-cli
+
+EMITS:
+  export-success — ruta del PDF generado
+  edit-ficha     — navegar a editar una ficha específica
