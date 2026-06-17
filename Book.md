@@ -820,3 +820,17 @@ Monta App.jsx en el DOM e importa los estilos globales
  
     // Enriquecer una ficha completa
     const fichaEnriquecida = enrichFicha(ficha)
+
+╔══════════════════════════════════════════════════════╗
+║  CÓNDOR FRAMEWORK — backend/src/routes/cvss.js       ║
+║  Rutas: calculadora CVSS 3.1 y presets               ║
+╚══════════════════════════════════════════════════════╝
+ 
+  ENDPOINTS:
+    GET  /api/cvss/calculate?vector=CVSS:3.1/...   — desde vector string
+    POST /api/cvss/calculate                        — desde métricas individuales
+    GET  /api/cvss/presets                          — lista de vectores predefinidos
+    GET  /api/cvss/presets/:id                      — preset específico
+    GET  /api/cvss/suggest                          — sugiere preset por categoría
+    GET  /api/cvss/metrics                          — definiciones de métricas (para UI)
+    GET  /api/cvss/self-test                        — corre tests contra casos del FIRST
