@@ -52,14 +52,9 @@ condor-report/
 │   │   │   └── cvss.js         ← GET /api/cvss/calculate
 │   │   ├── generators/
 │   │   │   ├── pdf.js          ← Puppeteer → PDF
-│   │   │   ├── docx.js         ← docx library → DOCX (fase 2)
-│   │   │   └── html.js         ← Template HTML standalone
 │   │   ├── cvss/
 │   │   │   ├── calculator.js   ← Motor CVSS 3.1
 │   │   │   └── vectors.js      ← Definiciones AV/AC/PR/UI/S/C/I/A
-│   │   ├── templates/
-│   │   │   ├── report.html     ← Template Puppeteer (PDF)
-│   │   │   └── ficha.html      ← Template ficha individual
 │   │   └── lib/
 │   │       ├── importer.js     ← Parser del JSON de condor-cli
 │   │       └── recommender.js  ← Motor de recomendaciones
