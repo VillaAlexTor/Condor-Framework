@@ -1,31 +1,3 @@
-<!--
-╔══════════════════════════════════════════════════════╗
-║  CÓNDOR FRAMEWORK — FichaEditor.vue                  ║
-║  Editor completo de fichas de vulnerabilidad         ║
-╚══════════════════════════════════════════════════════╝
-
-DESCRIPCIÓN:
-  Editor principal de fichas de vulnerabilidad.
-  Permite crear y editar cada campo de una ficha,
-  con la calculadora CVSS 3.1 integrada.
-
-  Campos editables:
-    - Título, categoría, fuente, CVE ID
-    - Descripción, evidencia, impacto
-    - Vector CVSS 3.1 (via CvssCalculator)
-    - Recomendación de remediación
-    - Referencias, estado, prioridad
-
-PROPS:
-  ficha    — ficha a editar (objeto completo)
-  index    — índice en la lista de fichas
-
-EMITS:
-  update   — ficha actualizada
-  delete   — eliminar esta ficha
-  duplicate — duplicar esta ficha
--->
-
 <template>
   <div class="ficha-editor" :class="{ expanded: isExpanded }">
 
