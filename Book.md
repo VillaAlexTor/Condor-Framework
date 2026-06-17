@@ -795,3 +795,28 @@ Monta App.jsx en el DOM e importa los estilos globales
     const { importFromJson } = require("./importer")
     const fichas = importFromJson(reportJson)
     // → [{ id: "VULN-001", titulo: "...", cvss: {...}, ... }]
+
+ ╔══════════════════════════════════════════════════════╗
+ ║  CÓNDOR FRAMEWORK — condor-report/lib/recommender.js ║
+ ║  Motor de recomendaciones automáticas por categoría  ║
+ ╚══════════════════════════════════════════════════════╝
+ 
+  DESCRIPCIÓN:
+    Genera recomendaciones de remediación para cada
+    categoría de vulnerabilidad detectada por condor-cli.
+ 
+    Cada recomendación incluye:
+      - Acción inmediata (remediación directa)
+      - Acciones de hardening adicionales
+      - Referencias técnicas (RFC, OWASP, NIST, CVE)
+      - SLA sugerido según severidad CVSS
+      - Nivel de dificultad de implementación
+ 
+  USO:
+    const { getRecommendation, enrichFicha } = require("./recommender")
+ 
+    // Obtener recomendación por categoría
+    const rec = getRecommendation("email_spoofing", { has_spf: true })
+ 
+    // Enriquecer una ficha completa
+    const fichaEnriquecida = enrichFicha(ficha)
