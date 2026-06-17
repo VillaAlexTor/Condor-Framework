@@ -969,3 +969,9 @@ DESCRIPCIÓN:
 
   El estado global (fichas, meta) vive aquí y se pasa
   a los componentes hijos via props/emits.
+
+ ╔══════════════════════════════════════════════════════╗
+ ║  CÓNDOR FRAMEWORK — condor-report/frontend/main.js   ║
+ ║  Entrypoint de la aplicación Vue 3                   ║
+ ╚══════════════════════════════════════════════════════╝
+  Monta App.vue en el DOM.
