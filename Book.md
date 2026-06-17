@@ -975,3 +975,15 @@ DESCRIPCIÓN:
  ║  Entrypoint de la aplicación Vue 3                   ║
  ╚══════════════════════════════════════════════════════╝
   Monta App.vue en el DOM.
+
+ ╔══════════════════════════════════════════════════════╗
+ ║  CÓNDOR FRAMEWORK — condor-report/frontend           ║
+ ║  vite.config.js                                      ║
+ ╚══════════════════════════════════════════════════════╝
+ 
+  Configuración Vite para el frontend Vue de condor-report.
+  Puerto 5174 (distinto al dashboard, que usa 5173).
+ 
+  Incluye proxy /api → backend Express (puerto 3001) para
+  evitar problemas de CORS en desarrollo, aunque el backend
+  ya tiene CORS habilitado por si se accede directo.
