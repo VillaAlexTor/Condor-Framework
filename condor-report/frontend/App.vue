@@ -1,25 +1,3 @@
-<!--
-╔══════════════════════════════════════════════════════╗
-║  CÓNDOR FRAMEWORK — condor-report/frontend/App.vue   ║
-║  Componente raíz — orquesta el flujo completo        ║
-╚══════════════════════════════════════════════════════╝
-
-DESCRIPCIÓN:
-  Componente raíz de condor-report. Maneja el flujo completo:
-
-    1. IMPORT  — cargar JSON de condor-cli → POST /api/report/import
-    2. EDIT    — lista de fichas editables (FichaEditor.vue)
-    3. PREVIEW — preview + export PDF (ReportPreview.vue)
-
-  Estados (steps):
-    "import"  → pantalla de carga de JSON / crear fichas manualmente
-    "edit"    → lista de FichaEditor para cada hallazgo
-    "preview" → ReportPreview con export final
-
-  El estado global (fichas, meta) vive aquí y se pasa
-  a los componentes hijos via props/emits.
--->
-
 <template>
   <div class="app">
 
