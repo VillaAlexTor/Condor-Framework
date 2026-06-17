@@ -1,38 +1,3 @@
-/**
- * ╔══════════════════════════════════════════════════════╗
- * ║  CÓNDOR FRAMEWORK — condor-report/generators/pdf.js  ║
- * ║  Generador de informes PDF con Puppeteer             ║
- * ╚══════════════════════════════════════════════════════╝
- *
- * DESCRIPCIÓN:
- *   Genera el informe de auditoría en formato PDF usando
- *   Puppeteer para renderizar HTML a PDF con calidad
- *   de impresión profesional.
- *
- *   El proceso:
- *     1. Construye el HTML completo del informe en memoria
- *     2. Lanza Puppeteer (headless Chromium)
- *     3. Renderiza el HTML con CSS completo
- *     4. Exporta a PDF con márgenes y cabeceras profesionales
- *     5. Guarda el archivo y retorna la ruta
- *
- *   Secciones del informe generado:
- *     - Portada (target, analista, fecha, clasificación)
- *     - Índice automático
- *     - Resumen ejecutivo (métricas, distribución CVSS)
- *     - Metodología (OSINT pasivo, herramientas)
- *     - Fichas de vulnerabilidad (una por hallazgo)
- *     - Recomendaciones generales
- *     - Conclusiones
- *
- * DEPENDENCIAS:
- *   npm install puppeteer
- *
- * USO:
- *   const { generatePDF } = require("./pdf")
- *   const pdfPath = await generatePDF({ meta, fichas, outputDir })
- */
-
 "use strict"
 
 const puppeteer = require("puppeteer")
