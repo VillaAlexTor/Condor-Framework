@@ -834,3 +834,16 @@ Monta App.jsx en el DOM e importa los estilos globales
     GET  /api/cvss/suggest                          — sugiere preset por categoría
     GET  /api/cvss/metrics                          — definiciones de métricas (para UI)
     GET  /api/cvss/self-test                        — corre tests contra casos del FIRST
+
+ ╔══════════════════════════════════════════════════════╗
+ ║  CÓNDOR FRAMEWORK — backend/src/routes/ficha.js      ║
+ ║  Rutas: recomendaciones y utilidades para fichas     ║
+ ╚══════════════════════════════════════════════════════╝
+ 
+  ENDPOINTS:
+    GET  /api/ficha/categories               — categorías disponibles
+    POST /api/ficha/recommend                — recomendación por categoría + contexto
+    POST /api/ficha/enrich                   — enriquece una ficha individual
+    POST /api/ficha/enrich-all               — enriquece un array de fichas
+    POST /api/ficha/general-recommendations  — recomendaciones generales del informe
+    POST /api/ficha/new                      — crea ficha vacía lista para editar
