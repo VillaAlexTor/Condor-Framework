@@ -303,26 +303,26 @@ graph LR
 
 ```mermaid
 graph TD
-    INT["🌐 Internet / Uplink UMSA\nFirewall virtual · Router"]
+    INT["Internet / Uplink UMSA\nFirewall virtual · Router"]
 
-    INT --> CLUSTER["🖥️ Cluster Proxmox VE\nHA Manager · Live Migration\nGrafana + Prometheus · PBS Backup"]
+    INT --> CLUSTER["Cluster Proxmox VE\nHA Manager · Live Migration\nGrafana + Prometheus · PBS Backup"]
 
-    CLUSTER --> VSWITCH["🔀 vSwitch — Red Virtual\nVLAN 10: Producción\nVLAN 20: Laboratorio\nVLAN 30: Gestión TI"]
+    CLUSTER --> VSWITCH["vSwitch — Red Virtual\nVLAN 10: Producción\nVLAN 20: Laboratorio\nVLAN 30: Gestión TI"]
 
-    VSWITCH --> HOST1["⚡ Host 1 — Servidor Físico A\nProxmox VE (KVM bare-metal)\nVMs de producción"]
-    VSWITCH --> HOST2["⚡ Host 2 — Servidor Físico B\nProxmox VE (KVM bare-metal)\nVMs de laboratorio"]
+    VSWITCH --> HOST1["Host 1 — Servidor Físico A\nProxmox VE (KVM bare-metal)\nVMs de producción"]
+    VSWITCH --> HOST2["Host 2 — Servidor Físico B\nProxmox VE (KVM bare-metal)\nVMs de laboratorio"]
 
-    HOST1 --> SIA["🏛️ VM: SIA\nProducción"]
-    HOST1 --> LMS["📚 VM: LMS Moodle\nProducción"]
-    HOST1 --> DNS["🌐 VM: DNS/DHCP\nInfraestructura"]
-    HOST1 --> WEB["🌍 VM: Servidor Web\nInfraestructura"]
+    HOST1 --> SIA["VM: SIA\nProducción"]
+    HOST1 --> LMS["VM: LMS Moodle\nProducción"]
+    HOST1 --> DNS["VM: DNS/DHCP\nInfraestructura"]
+    HOST1 --> WEB["VM: Servidor Web\nInfraestructura"]
 
-    HOST2 --> KALI["🔐 VM: Kali Linux\nLab SEG-261"]
-    HOST2 --> META["🎯 VM: Metasploitable\nLab Hacking Ético"]
-    HOST2 --> UBU["🐧 VM: Ubuntu Server\nTemplate / Lab"]
-    HOST2 --> WIN["🪟 VM: Windows Server\nTemplate / Lab"]
+    HOST2 --> KALI["VM: Kali Linux\nLab SEG-261"]
+    HOST2 --> META["VM: Metasploitable\nLab Hacking Ético"]
+    HOST2 --> UBU["VM: Ubuntu Server\nTemplate / Lab"]
+    HOST2 --> WIN["VM: Windows Server\nTemplate / Lab"]
 
-    HOST1 --> NAS["💾 NAS Compartido\nNFS/iSCSI · Datastores qcow2\nProxmox Backup Server"]
+    HOST1 --> NAS["NAS Compartido\nNFS/iSCSI · Datastores qcow2\nProxmox Backup Server"]
     HOST2 --> NAS
 ```
 
