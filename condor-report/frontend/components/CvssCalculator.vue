@@ -1,30 +1,3 @@
-<!--
-╔══════════════════════════════════════════════════════╗
-║  CÓNDOR FRAMEWORK — CvssCalculator.vue               ║
-║  Calculadora CVSS 3.1 interactiva                    ║
-╚══════════════════════════════════════════════════════╝
-
-DESCRIPCIÓN:
-  Componente Vue 3 que implementa la calculadora CVSS 3.1
-  interactiva. El analista selecciona el valor de cada
-  métrica con botones y el score se calcula en tiempo real.
-
-  Funcionalidades:
-    - 8 métricas con botones de selección
-    - Score calculado en tiempo real (fórmula CVSS 3.1)
-    - Vector string generado automáticamente
-    - Descripción de cada opción al hacer hover
-    - Presets de vectores comunes
-    - Emit del vector seleccionado al componente padre
-
-PROPS:
-  initialVector  — vector CVSS inicial (opcional)
-  compact        — modo compacto para el FichaEditor
-
-EMITS:
-  update:vector  — { vector, score, severity, metrics }
--->
-
 <template>
   <div class="cvss-calc" :class="{ compact }">
 

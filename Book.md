@@ -857,3 +857,28 @@ Monta App.jsx en el DOM e importa los estilos globales
     POST /api/report/import    — Importa JSON de condor-cli, genera fichas
     POST /api/report/generate  — Genera PDF desde fichas + metadata
     GET  /api/report/download/:filename — (servido como estático en server.js)
+
+╔══════════════════════════════════════════════════════╗
+║  CÓNDOR FRAMEWORK — CvssCalculator.vue               ║
+║  Calculadora CVSS 3.1 interactiva                    ║
+╚══════════════════════════════════════════════════════╝
+
+DESCRIPCIÓN:
+  Componente Vue 3 que implementa la calculadora CVSS 3.1
+  interactiva. El analista selecciona el valor de cada
+  métrica con botones y el score se calcula en tiempo real.
+
+  Funcionalidades:
+    - 8 métricas con botones de selección
+    - Score calculado en tiempo real (fórmula CVSS 3.1)
+    - Vector string generado automáticamente
+    - Descripción de cada opción al hacer hover
+    - Presets de vectores comunes
+    - Emit del vector seleccionado al componente padre
+
+PROPS:
+  initialVector  — vector CVSS inicial (opcional)
+  compact        — modo compacto para el FichaEditor
+
+EMITS:
+  update:vector  — { vector, score, severity, metrics }
