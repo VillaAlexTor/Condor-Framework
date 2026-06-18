@@ -46,6 +46,7 @@ condor-report/
 ├── backend/                    ← API Node.js / Express
 │   ├── package.json
 │   └── src/
+│       ├── server.js           ← Entrypoint del servidor (Express + CORS)
 │       ├── cvss/
 │       │   ├── calculator.js   ← Motor CVSS 3.1 (470 líneas)
 │       │   └── vectors.js      ← Definiciones de métricas (657 líneas)
@@ -70,8 +71,6 @@ condor-report/
         ├── CvssCalculator.vue  ← Calculadora CVSS 3.1 interactiva (836 líneas)
         └── ReportPreview.vue   ← Preview + configuración export PDF (1003 líneas)
 ```
-
-> **Nota:** `server.js` (entrypoint del backend) no existe actualmente. El backend no puede arrancar sin este archivo.
 
 ---
 
@@ -523,7 +522,7 @@ Preview y configuración de export:
 - [x] `frontend/FichaEditor.vue` — Editor de fichas
 - [x] `frontend/CvssCalculator.vue` — UI calculadora
 - [x] `frontend/ReportPreview.vue` — Preview antes de exportar
-- [ ] `server.js` — Entrypoint del backend Express
+- [x] `server.js` — Entrypoint del backend Express
 - [ ] `generators/docx.js` — Export DOCX (fase 2)
 - [ ] `templates/report.html` — Template HTML externo para PDF
 
