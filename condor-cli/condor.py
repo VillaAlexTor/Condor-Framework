@@ -6,6 +6,9 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # ─────────────────────────────────────────────
 #  Colores de la Terminal
 # ─────────────────────────────────────────────
@@ -182,7 +185,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--timeout",
         type=int,
-        default=10,
+        default=int(os.getenv("CONDOR_TIMEOUT", "10")),
         metavar="SEGUNDOS",
         help="Timeout en segundos para cada consulta de red (default: 10)"
     )

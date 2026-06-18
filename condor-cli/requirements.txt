@@ -10,10 +10,3 @@ urllib3==2.2.1            # Dependencia de requests (fijada por seguridad)
 
 # ── Variables de entorno ─────────────────────
 python-dotenv==1.0.1      # Carga .env automáticamente al importar
-
-# ── Output / Formatting ──────────────────────
-rich==13.7.1              # Tablas y colores en terminal (opcional pero bonito)
-jinja2==3.1.4             # Templates HTML para output --format html
-
-# ── Utilidades ───────────────────────────────
-python-dateutil==2.9.0    # Parsing robusto de fechas (WHOIS tiene formatos raros)

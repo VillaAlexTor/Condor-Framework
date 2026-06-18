@@ -2,42 +2,69 @@
 
 ## Estado del repo
 
-Monorepo en etapa temprana. Solo **`condor-cli/`** tiene código; `condor-dashboard` y `condor-report` existen únicamente en el diagrama de arquitectura del README.
+Monorepo con tres módulos funcionales:
+- **`condor-cli/`** — Motor OSINT (Python)
+- **`condor-dashboard/`** — Visualización (React + Vite)
+- **`condor-report/`** — Informes con CVSS 3.1 (Node.js + Vue.js)
 
 ## Entrypoint y ejecución
 
 ```bash
-# Desde la raíz del repo o condor-cli/
+# condor-cli
 python condor-cli/condor.py --target ejemplo.bo              # default: dns,whois,crt,wayback
 python condor-cli/condor.py --target ej.com --all-modules     # necesita todas las API keys
 python condor-cli/condor.py --target ej.com --format html -o report.html
 python condor-cli/condor.py --list-modules
+
+# condor-dashboard (puerto 5173)
+cd condor-dashboard && npm install && npm run dev
+
+# condor-report backend (puerto 3001)
+cd condor-report/backend && npm install && npm run dev
+
+# condor-report frontend (puerto 5174)
+cd condor-report/frontend && npm install && npm run dev
 ```
 
 Versión: `--version` → v0.1.0
 
 ## Dependencias
 
-No existe `requirements.txt`, `pyproject.toml` ni `setup.py`. Instalar manualmente:
-
+### condor-cli (Python)
 ```bash
-pip install dnspython python-whois requests
+cd condor-cli
+pip install -r requirements.txt
+cp .env.example .env  # Opcional: agregar API keys
 ```
 
-## Aliases de módulos rotos
+### condor-dashboard (Node.js)
+```bash
+cd condor-dashboard
+npm install
+```
 
-`crt` → apunta a `modules.crt_sh` (el archivo no existe; debería ser `modules/crt_sh.py` o redirigir a `dns_recon.crt_sh` dentro de `dns_recon.py`)
-`hunter` → apunta a `modules.hunter_lookup` (correcto)
+### condor-report (Node.js)
+```bash
+# Backend
+cd condor-report/backend
+npm install
 
-Ambos fallan silenciosamente (se loguean como `not_implemented`, el escaneo continúa). Arreglar antes de confiar en estos módulos.
+# Frontend
+cd condor-report/frontend
+npm install
+```
 
-## API keys (variables de entorno, sin archivo .env)
+## Módulos de condor-cli
 
-| Módulo | Variable(s) de entorno |
-|---|---|
-| censys | `CENSYS_API_ID`, `CENSYS_API_SECRET` |
-| shodan | `SHODAN_API_KEY` |
-| hunter | `HUNTER_API_KEY` |
+| Módulo | Archivo | API Key requerida |
+|--------|---------|-------------------|
+| dns | `modules/dns_recon.py` | No |
+| whois | `modules/whois_lookup.py` | No |
+| crt | `modules/crt_sh.py` | No |
+| wayback | `modules/wayback.py` | No |
+| censys | `modules/censys_query.py` | `CENSYS_API_ID`, `CENSYS_API_SECRET` |
+| shodan | `modules/shodan_query.py` | `SHODAN_API_KEY` |
+| hunter | `modules/hunter_lookup.py` | `HUNTER_API_KEY` |
 
 Módulos por defecto (sin API keys): dns, whois, crt, wayback.
 
@@ -45,9 +72,23 @@ Módulos por defecto (sin API keys): dns, whois, crt, wayback.
 
 Todo módulo en `condor-cli/modules/` expone `run(target, timeout)` que retorna un `dict`.
 
-## Sin CI, sin tests, sin linter/typecheck
+## API keys
 
-No hay archivos de test, workflows de CI, ni configuración de formateador/type checker. El repo tiene un único historial de commits.
+Las API keys se cargan automáticamente desde `condor-cli/.env` via `python-dotenv`.
+
+| Módulo | Variable(s) de entorno |
+|--------|------------------------|
+| censys | `CENSYS_API_ID`, `CENSYS_API_SECRET` |
+| shodan | `SHODAN_API_KEY` |
+| hunter | `HUNTER_API_KEY` |
+
+## Docker
+
+```bash
+docker compose up -d          # Levantar todo
+docker compose up dashboard   # Solo el dashboard
+docker compose down           # Detener
+```
 
 ## Git
 

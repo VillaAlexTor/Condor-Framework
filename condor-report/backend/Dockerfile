@@ -18,7 +18,7 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci --production
 
 COPY . .
 
@@ -26,4 +26,4 @@ RUN mkdir -p output
 
 EXPOSE 3001
 
-CMD ["npm", "run", "dev"]
+CMD ["node", "src/server.js"]

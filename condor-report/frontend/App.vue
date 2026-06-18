@@ -170,7 +170,7 @@ import ReportPreview  from "./components/ReportPreview.vue"
 // ─────────────────────────────────────────────
 //  Configuración
 // ─────────────────────────────────────────────
-const API_BASE = "http://localhost:3001"
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3001"
 
 const STEPS = [
   { id: "import",  label: "Importar"  },

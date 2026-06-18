@@ -4,17 +4,16 @@ const { calculateFromVector }    = require("../cvss/calculator")
 const { suggestPreset, METRICS } = require("../cvss/vectors")
 
 // ─────────────────────────────────────────────
-//  Contador global de fichas
+//  Contador de fichas (por request, no global)
 // ─────────────────────────────────────────────
-let fichaCounter = 0
-
-function nextId() {
-  fichaCounter++
-  return `VULN-${String(fichaCounter).padStart(3, "0")}`
-}
-
-function resetCounter() {
-  fichaCounter = 0
+function createCounter() {
+  let count = 0
+  return {
+    next() {
+      count++
+      return `VULN-${String(count).padStart(3, "0")}`
+    }
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -26,6 +25,7 @@ function resetCounter() {
  * Los campos vacíos los completa el analista en FichaEditor.
  *
  * @param {object} params
+ * @param {object} counter - counter creado por createCounter()
  * @returns {object} ficha de vulnerabilidad completa
  */
 function createFicha({
@@ -40,7 +40,7 @@ function createFicha({
   recomendacion = "",
   referencias   = [],
   raw           = {},   // datos brutos del módulo para referencia
-}) {
+}, counter) {
   // Calcular CVSS desde el vector
   let cvssResult = null
   try {
@@ -65,7 +65,7 @@ function createFicha({
   }[cvssResult.severity] || 5
 
   return {
-    id:           nextId(),
+    id:           counter ? counter.next() : "VULN-000",
     titulo,
     categoria,
     fuente,
@@ -105,7 +105,7 @@ function createFicha({
  * Extrae hallazgos del módulo DNS.
  * Detecta: ausencia de SPF, DMARC, DKIM — riesgo de email spoofing.
  */
-function extractFromDns(dnsData, target) {
+function extractFromDns(dnsData, target, counter) {
   const fichas = []
   if (!dnsData || dnsData.status !== "ok") return fichas
 
@@ -135,7 +135,7 @@ function extractFromDns(dnsData, target) {
         "https://dmarcian.com/what-is-dmarc/",
       ],
       raw: emailSec,
-    }))
+    }), counter)
 
   } else if (risk === "MEDIO") {
     // SPF presente pero sin DMARC
@@ -157,7 +157,7 @@ function extractFromDns(dnsData, target) {
         "https://dmarc.org/overview/",
       ],
       raw: emailSec,
-    }))
+    }), counter)
   }
 
   return fichas
@@ -167,7 +167,7 @@ function extractFromDns(dnsData, target) {
  * Extrae hallazgos del módulo WHOIS.
  * Detecta: expiración próxima del dominio.
  */
-function extractFromWhois(whoisData, target) {
+function extractFromWhois(whoisData, target, counter) {
   const fichas = []
   if (!whoisData || whoisData.status !== "ok") return fichas
 
@@ -193,7 +193,7 @@ function extractFromWhois(whoisData, target) {
                     `ataques de typosquatting, phishing o daño reputacional.`,
       referencias:  ["https://www.icann.org/resources/pages/domain-expiry-2014-07-02-en"],
       raw: analysis,
-    }))
+    }), counter)
 
   } else if (days < 30) {
     fichas.push(createFicha({
@@ -209,7 +209,7 @@ function extractFromWhois(whoisData, target) {
       impacto:      `Caída total del servicio web, email y cualquier subdominio asociado. ` +
                     `Riesgo de secuestro de dominio por terceros.`,
       raw: analysis,
-    }))
+    }), counter)
 
   } else if (days < 90) {
     fichas.push(createFicha({
@@ -224,7 +224,7 @@ function extractFromWhois(whoisData, target) {
                     `Registrar: ${whoisData.registrar || "N/A"}`,
       impacto:      `Riesgo de caída de servicios si no se renueva antes de la fecha de expiración.`,
       raw: analysis,
-    }))
+    }), counter)
   }
 
   return fichas
@@ -234,7 +234,7 @@ function extractFromWhois(whoisData, target) {
  * Extrae hallazgos del módulo Wayback.
  * Detecta: archivos sensibles, backups, paneles admin.
  */
-function extractFromWayback(waybackData, target) {
+function extractFromWayback(waybackData, target, counter) {
   const fichas   = []
   if (!waybackData || waybackData.status !== "ok") return fichas
 
@@ -259,7 +259,7 @@ function extractFromWayback(waybackData, target) {
                     `o datos sensibles que permitan acceso no autorizado al sistema.`,
       referencias:  ["https://owasp.org/www-project-web-security-testing-guide/"],
       raw: { urls: sensFiles },
-    }))
+    }), counter)
   }
 
   // ── Archivos de backup ───────────────────
@@ -280,7 +280,7 @@ function extractFromWayback(waybackData, target) {
                     `base de datos, contraseñas hasheadas o en texto plano, y configuración ` +
                     `de servidores.`,
       raw: { urls: backupFiles },
-    }))
+    }), counter)
   }
 
   // ── Paneles de administración ────────────
@@ -300,7 +300,7 @@ function extractFromWayback(waybackData, target) {
       impacto:      `Acceso no autorizado al panel de administración mediante fuerza bruta ` +
                     `o exploits conocidos del CMS/framework detectado.`,
       raw: { urls: adminPanels },
-    }))
+    }), counter)
   }
 
   return fichas
@@ -310,7 +310,7 @@ function extractFromWayback(waybackData, target) {
  * Extrae hallazgos del módulo Censys.
  * Detecta: puertos peligrosos, TLS expirado/autofirmado.
  */
-function extractFromCensys(censysData, target) {
+function extractFromCensys(censysData, target, counter) {
   const fichas = []
   if (!censysData || censysData.status !== "ok") return fichas
 
@@ -347,7 +347,7 @@ function extractFromCensys(censysData, target) {
       impacto:      `Exposición directa del servicio a internet aumenta la superficie de ataque. ` +
                     `Riesgo de explotación mediante fuerza bruta, exploits conocidos o acceso no autorizado.`,
       raw: { port, hosts: hostsWithPort },
-    }))
+    }), counter)
   })
 
   // ── Issues TLS ───────────────────────────
@@ -374,7 +374,7 @@ function extractFromCensys(censysData, target) {
                     `interceptación de credenciales y datos en tránsito.`,
       referencias:  ["https://letsencrypt.org/", "https://crt.sh/"],
       raw: { issue },
-    }))
+    }), counter)
   })
 
   return fichas
@@ -384,7 +384,7 @@ function extractFromCensys(censysData, target) {
  * Extrae hallazgos del módulo Shodan.
  * Detecta: CVEs críticos y altos, puertos peligrosos.
  */
-function extractFromShodan(shodanData, target) {
+function extractFromShodan(shodanData, target, counter) {
   const fichas = []
   if (!shodanData || shodanData.status !== "ok") return fichas
 
@@ -438,7 +438,7 @@ function extractFromShodan(shodanData, target) {
         ...(vuln.references || []).slice(0, 2),
       ],
       raw: vuln,
-    }))
+    }), counter)
   })
 
   return fichas
@@ -448,7 +448,7 @@ function extractFromShodan(shodanData, target) {
  * Extrae hallazgos del módulo Hunter.
  * Detecta: emails IT/ejecutivos expuestos, patrón de email.
  */
-function extractFromHunter(hunterData, target) {
+function extractFromHunter(hunterData, target, counter) {
   const fichas     = []
   if (!hunterData || hunterData.status !== "ok") return fichas
 
@@ -476,7 +476,7 @@ function extractFromHunter(hunterData, target) {
                     `Un ataque exitoso puede resultar en acceso a sistemas internos, ` +
                     `credenciales VPN, o infraestructura crítica.`,
       raw: { emails: itStaff },
-    }))
+    }), counter)
   }
 
   // ── Emails ejecutivos expuestos ──────────
@@ -497,7 +497,7 @@ function extractFromHunter(hunterData, target) {
                     `dirigido. Potencial de fraude financiero y robo de información confidencial.`,
       referencias:  ["https://www.ic3.gov/Media/Y2022/PSA220504"],
       raw: { emails: executives },
-    }))
+    }), counter)
   }
 
   // ── Patrón de email corporativo ──────────
@@ -519,7 +519,7 @@ function extractFromHunter(hunterData, target) {
                     `para campañas de spear phishing personalizadas o ataques de password ` +
                     `spraying contra servicios expuestos (OWA, VPN, Office 365).`,
       raw: { pattern, total: hunterData.total_emails },
-    }))
+    }), counter)
   }
 
   return fichas
@@ -544,8 +544,8 @@ function importFromJson(reportJson) {
     throw new Error("Estructura inválida: el JSON debe tener 'meta' y 'results'")
   }
 
-  // Resetear contador para IDs consistentes
-  resetCounter()
+  // Crear counter local para IDs consistentes (thread-safe)
+  const counter = createCounter()
 
   const target  = reportJson.meta.target  || "objetivo"
   const results = reportJson.results      || {}
@@ -580,7 +580,7 @@ function importFromJson(reportJson) {
     }
 
     try {
-      const extracted = fn(moduleData, target)
+      const extracted = fn(moduleData, target, counter)
       fichas.push(...extracted)
       moduleStats[key] = { fichas: extracted.length, status: "ok" }
     } catch (e) {
@@ -645,5 +645,5 @@ module.exports = {
   extractFromShodan,
   extractFromHunter,
   createFicha,
-  resetCounter,
+  createCounter,
 }

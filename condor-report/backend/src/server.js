@@ -21,16 +21,24 @@ const fichaRoutes  = require("./routes/ficha")
 const app = express()
 
 const PORT          = process.env.PORT          || 3001
-const FRONTEND_URL  = process.env.FRONTEND_URL  || "http://localhost:5174"
 const OUTPUT_DIR    = process.env.OUTPUT_DIR    || path.join(__dirname, "..", "output")
 
 // ─────────────────────────────────────────────
 //  Middleware
 // ─────────────────────────────────────────────
 
-// CORS — permitir frontend en desarrollo
+const FRONTEND_URLS = (process.env.FRONTEND_URL || "http://localhost:5174")
+  .split(",")
+  .map(u => u.trim())
+
+// CORS — permitir frontend(s) en desarrollo
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: (origin, callback) => {
+    // Permitir requests sin origin (curl, Postman, apps móviles)
+    if (!origin) return callback(null, true)
+    if (FRONTEND_URLS.includes(origin)) return callback(null, true)
+    callback(new Error("No permitido por CORS"))
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type"],
 }))
@@ -96,15 +104,7 @@ app.listen(PORT, () => {
   ┌─────────────────────────────────────────────┐
   │  Cóndor Report Backend                      │
   │  Puerto:    ${String(PORT).padEnd(33)}│
-  │  Frontend:  ${FRONTEND_URL.padEnd(33)}│
   │  Output:    ${OUTPUT_DIR.padEnd(33)}│
-  │  Rutas:                              │
-  │    POST /api/report/import           │
-  │    POST /api/report/generate         │
-  │    GET  /api/cvss/calculate          │
-  │    GET  /api/cvss/presets            │
-  │    GET  /api/ficha/categories        │
-  │    GET  /api/health                  │
   └─────────────────────────────────────────────┘
   `)
 })
