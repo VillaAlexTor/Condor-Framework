@@ -186,10 +186,13 @@ condor-framework/
 └── condor-report/
     ├── README.md
     ├── backend/
-    ├── Dockerfile
+    │   ├── Dockerfile
     │   ├── package.json
     │   └── src/
     │       ├── server.js
+    │       ├── cvss/
+    │       │   ├── calculator.js
+    │       │   └── vectors.js
     │       ├── lib/
     │       │   ├── importer.js
     │       │   └── recommender.js
@@ -200,6 +203,7 @@ condor-framework/
     │           ├── cvss.js
     │           └── ficha.js
     └── frontend/
+        ├── Dockerfile
         ├── package.json
         ├── vite.config.js
         ├── index.html
