@@ -164,13 +164,12 @@ condor-framework/
 │       └── hunter_lookup.py
 │
 ├── condor-dashboard/
+│   ├── Dockerfile
 │   ├── package.json
 │   ├── vite.config.js
 │   ├── tailwind.config.js
 │   ├── postcss.config.js
 │   ├── index.html
-│   ├── index.css
-│   ├── main.js
 │   └── src/
 │       ├── main.jsx
 │       ├── index.css
@@ -187,11 +186,10 @@ condor-framework/
 └── condor-report/
     ├── README.md
     ├── backend/
+    ├── Dockerfile
     │   ├── package.json
     │   └── src/
-    │       ├── cvss/
-    │       │   ├── calculator.js
-    │       │   └── vectors.js
+    │       ├── server.js
     │       ├── lib/
     │       │   ├── importer.js
     │       │   └── recommender.js

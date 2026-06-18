@@ -32,9 +32,8 @@ No consume APIs en tiempo real — carga un archivo `.json` y renderiza los dato
 ```
 condor-dashboard/
 │
+├── Dockerfile              ← Docker image para el dashboard
 ├── index.html              ← Entry HTML (Vite)
-├── index.css               ← Estilos globales (scrollbar, animaciones, reset)
-├── main.js                 ← Entry point residual (no usado por Vite)
 ├── package.json            ← Dependencias y scripts
 ├── vite.config.js          ← Configuración Vite (puerto 5173)
 ├── tailwind.config.js      ← Paleta Cóndor + fuentes personalizadas
