@@ -161,7 +161,7 @@ condor-framework/
 │       ├── crt_sh.py
 │       ├── censys_query.py
 │       ├── shodan_query.py
-│       └── metadata_hunter.py
+│       └── hunter_lookup.py
 │
 ├── condor-dashboard/
 │   ├── package.json

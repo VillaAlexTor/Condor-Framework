@@ -253,7 +253,7 @@ Banners, versiones de software y CVEs vía Shodan API.
 
 **Dependencias:** `requests`
 
-### metadata_hunter.py (497 líneas)
+### hunter_lookup.py (497 líneas)
 
 Emails corporativos expuestos vía Hunter.io API.
 
@@ -328,7 +328,7 @@ condor-cli/
     ├── crt_sh.py           ← Certificate Transparency Logs
     ├── censys_query.py     ← Censys.io API v2
     ├── shodan_query.py     ← Shodan API
-    └── metadata_hunter.py  ← Hunter.io API
+    └── hunter_lookup.py    ← Hunter.io API
 ```
 
 ### Flujo de ejecución

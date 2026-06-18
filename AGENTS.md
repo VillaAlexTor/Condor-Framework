@@ -27,7 +27,7 @@ pip install dnspython python-whois requests
 ## Aliases de módulos rotos
 
 `crt` → apunta a `modules.crt_sh` (el archivo no existe; debería ser `modules/crt_sh.py` o redirigir a `dns_recon.crt_sh` dentro de `dns_recon.py`)
-`hunter` → apunta a `modules.hunter_lookup` (debería ser `modules/metadata_hunter.py`)
+`hunter` → apunta a `modules.hunter_lookup` (correcto)
 
 Ambos fallan silenciosamente (se loguean como `not_implemented`, el escaneo continúa). Arreglar antes de confiar en estos módulos.
 
