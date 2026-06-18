@@ -143,16 +143,6 @@ Si modificas dependencias o Dockerfiles:
 docker compose up -d --build
 ```
 
-### Nota importante sobre Dockerfiles
-
-El `docker-compose.yml` actual referencia Dockerfiles que aún no existen:
-
-- `condor-dashboard/Dockerfile`
-- `condor-report/backend/Dockerfile`
-- `condor-report/frontend/Dockerfile`
-
-**Mientras se crean these archivos, usa la instalación manual (Opción 1).**
-
 ### Variables de entorno en Docker
 
 Las variables están configuradas en `docker-compose.yml`. Para personalizarlas, crea un archivo `docker-compose.override.yml`:
