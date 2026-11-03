@@ -23,6 +23,9 @@ RUN npm ci --production
 COPY . .
 
 RUN mkdir -p output
+RUN chown -R node:node /app
+
+USER node
 
 EXPOSE 3001
 

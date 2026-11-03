@@ -93,12 +93,13 @@ function PatternDisplay({ pattern, domain, organization }) {
 
   const exampleEmail = `${example}@${domain}`
 
-  // Colorear partes del patrón
-  const coloredPattern = pattern
-    .replace(/\{first\}/g,  '<span class="text-[#00ff88]">{first}</span>')
-    .replace(/\{last\}/g,   '<span class="text-[#00d4ff]">{last}</span>')
-    .replace(/\{f\}/g,      '<span class="text-[#00ff88]">{f}</span>')
-    .replace(/\{l\}/g,      '<span class="text-[#00d4ff]">{l}</span>')
+  const patternParts = pattern.split(/(\{first\}|\{last\}|\{f\}|\{l\})/g)
+  const tokenClass = {
+    "{first}": "text-[#00ff88]",
+    "{f}":     "text-[#00ff88]",
+    "{last}":  "text-[#00d4ff]",
+    "{l}":     "text-[#00d4ff]",
+  }
 
   return (
     <div className="border border-orange-500/30 bg-orange-500/5 rounded-xl p-5 space-y-4">
@@ -115,10 +116,12 @@ function PatternDisplay({ pattern, domain, organization }) {
       {/* Patrón visual */}
       <div className="bg-slate-950 rounded-lg p-4 font-mono">
         <div className="text-[10px] text-slate-600 mb-2">Patrón detectado:</div>
-        <div
-          className="text-lg font-bold"
-          dangerouslySetInnerHTML={{ __html: `${coloredPattern}<span class="text-slate-500">@${domain}</span>` }}
-        />
+        <div className="text-lg font-bold">
+          {patternParts.map((part, index) => (
+            <span key={`${part}-${index}`} className={tokenClass[part] || ""}>{part}</span>
+          ))}
+          <span className="text-slate-500">@{domain}</span>
+        </div>
       </div>
 
       {/* Leyenda */}

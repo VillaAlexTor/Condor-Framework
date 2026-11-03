@@ -57,6 +57,7 @@
           @imported="onImported"
           @manual-start="onManualStart"
           :api-base="API_BASE"
+          :api-key="API_KEY"
         />
       </div>
 
@@ -143,6 +144,8 @@
         <ReportPreview
           :fichas="fichas"
           :report-meta="reportMeta"
+          :api-base="API_BASE"
+          :api-key="API_KEY"
           @export-success="onExportSuccess"
           @edit-ficha="onEditFicha"
         />
@@ -171,6 +174,7 @@ import ReportPreview  from "./components/ReportPreview.vue"
 //  Configuración
 // ─────────────────────────────────────────────
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3001"
+const API_KEY = import.meta.env.VITE_REPORT_API_KEY || ""
 
 const STEPS = [
   { id: "import",  label: "Importar"  },
@@ -306,7 +310,7 @@ async function addManualFicha() {
   try {
     const res  = await fetch(`${API_BASE}/api/ficha/new`, {
       method:  "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
       body:    JSON.stringify({ fuente: "manual" }),
     })
     const data = await res.json()
@@ -384,7 +388,10 @@ function showToast(message, type = "info", icon = "ℹ") {
 // ─────────────────────────────────────────────
 async function checkApiHealth() {
   try {
-    const res = await fetch(`${API_BASE}/api/health`, { signal: AbortSignal.timeout(3000) })
+    const res = await fetch(`${API_BASE}/api/health`, {
+      headers: { "X-API-Key": API_KEY },
+      signal: AbortSignal.timeout(3000),
+    })
     apiStatus.value = res.ok ? "online" : "offline"
   } catch {
     apiStatus.value = "offline"

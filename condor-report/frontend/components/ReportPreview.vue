@@ -150,10 +150,10 @@
 
         <!-- Descarga disponible -->
         <div class="download-ready" v-if="pdfUrl">
-          <a :href="pdfUrl" download class="download-link">
+          <button type="button" class="download-link" @click="downloadPDF">
             <span>⬇</span>
             Descargar PDF — {{ pdfFilename }}
-          </a>
+          </button>
         </div>
 
         <!-- Error -->
@@ -353,6 +353,8 @@ import { ref, computed, reactive } from "vue"
 const props = defineProps({
   fichas:     { type: Array,  required: true },
   reportMeta: { type: Object, default: () => ({}) },
+  apiBase:    { type: String, default: "http://localhost:3001" },
+  apiKey:     { type: String, default: "" },
 })
 
 const emit = defineEmits(["export-success", "edit-ficha"])
@@ -436,9 +438,9 @@ async function generatePDF() {
   pdfUrl.value        = ""
 
   try {
-    const response = await fetch("http://localhost:3001/api/report/generate", {
+    const response = await fetch(`${props.apiBase}/api/report/generate`, {
       method:  "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-API-Key": props.apiKey },
       body: JSON.stringify({
         meta:   { ...meta },
         fichas: props.fichas,
@@ -459,7 +461,7 @@ async function generatePDF() {
       pdfFilename.value   = data.filename || "informe.pdf"
 
       // Si el backend retorna la URL de descarga
-      pdfUrl.value = data.downloadUrl || `http://localhost:3001/api/report/download/${data.filename}`
+      pdfUrl.value = data.downloadUrl || `/api/report/download/${data.filename}`
 
       emit("export-success", data.path)
 
@@ -473,6 +475,24 @@ async function generatePDF() {
     exportError.value = err.message || "Error al conectar con el backend. ¿Está corriendo en puerto 3001?"
   } finally {
     isGenerating.value = false
+  }
+}
+
+async function downloadPDF() {
+  if (!pdfUrl.value) return
+  try {
+    const response = await fetch(`${props.apiBase}${pdfUrl.value}`, {
+      headers: { "X-API-Key": props.apiKey },
+    })
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    const blobUrl = URL.createObjectURL(await response.blob())
+    const anchor = document.createElement("a")
+    anchor.href = blobUrl
+    anchor.download = pdfFilename.value || "informe.pdf"
+    anchor.click()
+    URL.revokeObjectURL(blobUrl)
+  } catch (err) {
+    exportError.value = err.message || "No se pudo descargar el PDF"
   }
 }
 </script>

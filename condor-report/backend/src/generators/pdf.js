@@ -50,8 +50,6 @@ function cvssBarWidth(score) {
 // ─────────────────────────────────────────────
 function buildCSS() {
   return `
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -682,11 +680,11 @@ function buildExecutiveSummary(meta, fichas, stats) {
             const c = ss(f.cvss.severity)
             return `
               <tr>
-                <td class="mono" style="white-space: nowrap;">${f.id}</td>
+                <td class="mono" style="white-space: nowrap;">${escapeHtml(f.id)}</td>
                 <td>${escapeHtml(f.titulo)}</td>
                 <td class="mono" style="font-weight: 700; color: ${c.badge}; white-space: nowrap;">${f.cvss.score.toFixed(1)}</td>
                 <td><span class="badge badge-severity" style="background: ${c.badge};">${f.cvss.severity}</span></td>
-                <td class="mono text-muted">${f.fuente}</td>
+                <td class="mono text-muted">${escapeHtml(f.fuente)}</td>
               </tr>
             `
           }).join("")}
@@ -761,9 +759,9 @@ function buildCvssMetrics(metrics) {
         const label = metricLabels[item.code]?.[val] || val
         return `
           <div class="cvss-metric-item">
-            <div class="cvss-metric-name">${item.code}</div>
-            <div class="cvss-metric-value">${val}</div>
-            <div class="cvss-metric-label">${label}</div>
+            <div class="cvss-metric-name">${escapeHtml(item.code)}</div>
+            <div class="cvss-metric-value">${escapeHtml(val)}</div>
+            <div class="cvss-metric-label">${escapeHtml(label)}</div>
           </div>
         `
       }).join("")}
@@ -780,12 +778,12 @@ function buildFicha(ficha) {
       <!-- Header -->
       <div class="ficha-header" style="background: ${c.bg}; border-bottom: 2px solid ${c.border};">
         <div style="flex: 1;">
-          <div class="ficha-id" style="color: ${c.text};">${ficha.id}</div>
+          <div class="ficha-id" style="color: ${c.text};">${escapeHtml(ficha.id)}</div>
           <div class="ficha-title" style="color: ${c.text};">${escapeHtml(ficha.titulo)}</div>
         </div>
         <div class="ficha-badges">
-          <span class="badge badge-severity" style="background: ${c.badge};">${ficha.cvss.severity}</span>
-          <span class="badge badge-source">${ficha.fuente}</span>
+          <span class="badge badge-severity" style="background: ${c.badge};">${escapeHtml(ficha.cvss.severity)}</span>
+          <span class="badge badge-source">${escapeHtml(ficha.fuente)}</span>
           ${ficha.cve_id ? `<span class="badge badge-cve">${escapeHtml(ficha.cve_id)}</span>` : ""}
         </div>
       </div>
@@ -795,7 +793,7 @@ function buildFicha(ficha) {
         <div class="cvss-score-number" style="color: ${c.badge};">${ficha.cvss.score.toFixed(1)}</div>
         <div class="cvss-score-info" style="flex: 1;">
           <div style="font-weight: 700; font-size: 10pt;">CVSS v3.1 Base Score</div>
-          <div class="cvss-vector">${ficha.cvss.vector}</div>
+          <div class="cvss-vector">${escapeHtml(ficha.cvss.vector)}</div>
           <div style="margin-top: 8px;" class="cvss-score-bar">
             <div class="cvss-score-fill" style="width: ${cvssBarWidth(ficha.cvss.score)}; background: ${c.badge};"></div>
           </div>
@@ -851,11 +849,11 @@ function buildFicha(ficha) {
         <div class="ficha-field" style="display: flex; gap: 16px;">
           <div>
             <div class="ficha-field-label">Estado</div>
-            <span class="badge badge-source">${ficha.estado || "abierto"}</span>
+            <span class="badge badge-source">${escapeHtml(ficha.estado || "abierto")}</span>
           </div>
           <div>
             <div class="ficha-field-label">Categoría</div>
-            <span class="mono text-muted" style="font-size: 9pt;">${ficha.categoria}</span>
+            <span class="mono text-muted" style="font-size: 9pt;">${escapeHtml(ficha.categoria)}</span>
           </div>
           ${rem.difficulty ? `
             <div>
@@ -977,12 +975,12 @@ function buildFullHTML(meta, fichas) {
         ${fichas.map(f => {
           const c = ss(f.cvss.severity)
           return `<tr>
-            <td class="mono">${f.id}</td>
+            <td class="mono">${escapeHtml(f.id)}</td>
             <td>${escapeHtml(f.titulo)}</td>
             <td class="mono" style="font-weight:700;color:${c.badge};">${f.cvss.score.toFixed(1)}</td>
-            <td><span class="badge badge-severity" style="background:${c.badge};">${f.cvss.severity}</span></td>
-            <td class="mono text-muted" style="font-size:8pt;">${f.categoria}</td>
-            <td class="mono text-muted">${f.fuente}</td>
+            <td><span class="badge badge-severity" style="background:${c.badge};">${escapeHtml(f.cvss.severity)}</span></td>
+            <td class="mono text-muted" style="font-size:8pt;">${escapeHtml(f.categoria)}</td>
+            <td class="mono text-muted">${escapeHtml(f.fuente)}</td>
           </tr>`
         }).join("")}
       </tbody>
@@ -1038,15 +1036,19 @@ async function generatePDF({ meta, fichas, outputDir = "./output", timeout = 300
   const browser = await puppeteer.launch({
     headless: "new",
     args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
       "--disable-dev-shm-usage",
-      "--disable-web-security",
     ],
   })
 
   try {
     const page = await browser.newPage()
+    await page.setRequestInterception(true)
+    page.on("request", request => {
+      if (request.isNavigationRequest() && request.frame() === page.mainFrame()) {
+        return request.continue()
+      }
+      return request.abort()
+    })
 
     // Configurar timeout
     page.setDefaultTimeout(timeout)

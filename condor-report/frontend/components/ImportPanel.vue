@@ -140,9 +140,9 @@
         <div v-for="file in previousReports" :key="file.filename" class="previous-item">
           <span class="prev-icon">📑</span>
           <div class="prev-info">
-            <a :href="`${apiBase}${file.downloadUrl}`" target="_blank" class="prev-name">
+            <button type="button" class="prev-name" @click="downloadPrevious(file)">
               {{ file.filename }}
-            </a>
+            </button>
             <div class="prev-meta">{{ file.sizeKB }} KB · {{ formatDate(file.createdAt) }}</div>
           </div>
         </div>
@@ -160,6 +160,7 @@ import { ref, onMounted } from "vue"
 // ─────────────────────────────────────────────
 const props = defineProps({
   apiBase: { type: String, default: "http://localhost:3001" },
+  apiKey:  { type: String, default: "" },
 })
 
 const emit = defineEmits(["imported", "manual-start"])
@@ -321,7 +322,7 @@ async function confirmImport() {
   try {
     const response = await fetch(`${props.apiBase}/api/report/import`, {
       method:  "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-API-Key": props.apiKey },
       body:    JSON.stringify(filePreview.value.rawJson),
     })
 
@@ -376,10 +377,30 @@ function startManual() {
 // ─────────────────────────────────────────────
 async function loadPreviousReports() {
   try {
-    const res  = await fetch(`${props.apiBase}/api/report/list`, { signal: AbortSignal.timeout(3000) })
+    const res  = await fetch(`${props.apiBase}/api/report/list`, {
+      headers: { "X-API-Key": props.apiKey },
+      signal: AbortSignal.timeout(3000),
+    })
     const data = await res.json()
     if (data.success) {
       previousReports.value = data.files.slice(0, 5)
+    }
+
+    async function downloadPrevious(file) {
+      try {
+        const response = await fetch(`${props.apiBase}${file.downloadUrl}`, {
+          headers: { "X-API-Key": props.apiKey },
+        })
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        const blobUrl = URL.createObjectURL(await response.blob())
+        const anchor = document.createElement("a")
+        anchor.href = blobUrl
+        anchor.download = file.filename
+        anchor.click()
+        URL.revokeObjectURL(blobUrl)
+      } catch (err) {
+        error.value = { title: "Error de descarga", detail: err.message || "No se pudo descargar el PDF" }
+      }
     }
   } catch {
     // Silencioso — no es crítico

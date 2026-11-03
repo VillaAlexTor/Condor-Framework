@@ -9,6 +9,12 @@ const { enrichAll }         = require("../lib/recommender")
 const { generatePDF }        = require("../generators/pdf")
 
 const router = express.Router()
+const MAX_FICHAS = 100
+const MAX_TEXT_LENGTH = 10000
+
+function isBoundedText(value, max = MAX_TEXT_LENGTH) {
+  return typeof value === "string" && value.length <= max
+}
 
 // ─────────────────────────────────────────────
 //  POST /api/report/import
@@ -100,6 +106,15 @@ router.post("/generate", async (req, res, next) => {
         message: "fichas debe ser un array con al menos 1 elemento",
       })
     }
+    if (fichas.length > MAX_FICHAS) {
+      return res.status(413).json({
+        success: false,
+        message: `El informe no puede contener más de ${MAX_FICHAS} fichas`,
+      })
+    }
+    if (!isBoundedText(meta.target, 255) || !isBoundedText(meta.titulo || "", 500)) {
+      return res.status(400).json({ success: false, message: "Metadata fuera de límites" })
+    }
 
     // Validar que cada ficha tenga lo mínimo
     const camposRequeridos = ["id", "titulo", "cvss"]
@@ -116,6 +131,14 @@ router.post("/generate", async (req, res, next) => {
           success: false,
           message: `Ficha #${i + 1} (${ficha.id}) — cvss.score debe ser un número`,
         })
+      }
+      if (!Number.isFinite(ficha.cvss.score) || ficha.cvss.score < 0 || ficha.cvss.score > 10) {
+        return res.status(400).json({ success: false, message: `Ficha #${i + 1} tiene un score CVSS inválido` })
+      }
+      for (const field of ["id", "titulo", "fuente", "descripcion", "evidencia", "impacto", "categoria"]) {
+        if (ficha[field] !== undefined && !isBoundedText(String(ficha[field]))) {
+          return res.status(400).json({ success: false, message: `Ficha #${i + 1} contiene un campo demasiado largo` })
+        }
       }
     }
 
