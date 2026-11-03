@@ -243,6 +243,11 @@ condor-framework/
 
 ## Instalación
 
+Para consultar el procedimiento completo de instalación, ejecución y
+validación, consulta el [Manual completo de pruebas](MANUAL-PRUEBAS.md).
+Para configurar Censys, Shodan, Hunter y la API de reportes, consulta el
+[Manual de conexión de APIs](MANUAL-APIS.md).
+
 ### Requisitos previos
 - Python 3.11+
 - Node.js 20+
