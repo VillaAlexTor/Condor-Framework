@@ -354,7 +354,6 @@ const props = defineProps({
   fichas:     { type: Array,  required: true },
   reportMeta: { type: Object, default: () => ({}) },
   apiBase:    { type: String, default: "http://localhost:3001" },
-  apiKey:     { type: String, default: "" },
 })
 
 const emit = defineEmits(["export-success", "edit-ficha"])
@@ -440,7 +439,8 @@ async function generatePDF() {
   try {
     const response = await fetch(`${props.apiBase}/api/report/generate`, {
       method:  "POST",
-      headers: { "Content-Type": "application/json", "X-API-Key": props.apiKey },
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         meta:   { ...meta },
         fichas: props.fichas,
@@ -482,7 +482,7 @@ async function downloadPDF() {
   if (!pdfUrl.value) return
   try {
     const response = await fetch(`${props.apiBase}${pdfUrl.value}`, {
-      headers: { "X-API-Key": props.apiKey },
+      credentials: "include",
     })
     if (!response.ok) throw new Error(`HTTP ${response.status}`)
     const blobUrl = URL.createObjectURL(await response.blob())

@@ -1,5 +1,15 @@
 <template>
   <div class="app">
+    <div v-if="!authenticated" class="auth-screen">
+      <form class="auth-card" @submit.prevent="login">
+        <h1>Acceso a Cóndor Report</h1>
+        <p>Introduce la credencial configurada para iniciar una sesión segura.</p>
+        <input v-model="loginPassword" type="password" autocomplete="current-password" placeholder="Contraseña" autofocus />
+        <button type="submit">Iniciar sesión</button>
+        <div v-if="loginError" class="auth-error">{{ loginError }}</div>
+      </form>
+    </div>
+    <template v-else>
 
     <!-- ── Header global ── -->
     <header class="app-header">
@@ -57,7 +67,6 @@
           @imported="onImported"
           @manual-start="onManualStart"
           :api-base="API_BASE"
-          :api-key="API_KEY"
         />
       </div>
 
@@ -145,7 +154,6 @@
           :fichas="fichas"
           :report-meta="reportMeta"
           :api-base="API_BASE"
-          :api-key="API_KEY"
           @export-success="onExportSuccess"
           @edit-ficha="onEditFicha"
         />
@@ -161,6 +169,7 @@
       </div>
     </transition>
 
+    </template>
   </div>
 </template>
 
@@ -174,7 +183,6 @@ import ReportPreview  from "./components/ReportPreview.vue"
 //  Configuración
 // ─────────────────────────────────────────────
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3001"
-const API_KEY = import.meta.env.VITE_REPORT_API_KEY || ""
 
 const STEPS = [
   { id: "import",  label: "Importar"  },
@@ -192,6 +200,9 @@ const sortBy  = ref("prioridad")
 const activeSeverityFilter = ref("all")
 
 const apiStatus = ref("checking")  // checking | online | offline
+const authenticated = ref(false)
+const loginPassword = ref("")
+const loginError = ref("")
 
 const reportMeta = ref({
   target:        "",
@@ -310,7 +321,8 @@ async function addManualFicha() {
   try {
     const res  = await fetch(`${API_BASE}/api/ficha/new`, {
       method:  "POST",
-      headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body:    JSON.stringify({ fuente: "manual" }),
     })
     const data = await res.json()
@@ -389,7 +401,6 @@ function showToast(message, type = "info", icon = "ℹ") {
 async function checkApiHealth() {
   try {
     const res = await fetch(`${API_BASE}/api/health`, {
-      headers: { "X-API-Key": API_KEY },
       signal: AbortSignal.timeout(3000),
     })
     apiStatus.value = res.ok ? "online" : "offline"
@@ -398,11 +409,43 @@ async function checkApiHealth() {
   }
 }
 
+async function login() {
+  loginError.value = ""
+  try {
+    const response = await fetch(`${API_BASE}/api/auth/login`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: loginPassword.value }),
+    })
+    const data = await response.json().catch(() => ({}))
+    if (!response.ok || !data.success) throw new Error(data.message || "No se pudo iniciar sesión")
+    authenticated.value = true
+    loginPassword.value = ""
+    checkApiHealth()
+  } catch (error) {
+    loginError.value = error.message
+  }
+}
+
+async function restoreSession() {
+  try {
+    const response = await fetch(`${API_BASE}/api/auth/me`, {
+      credentials: "include",
+      signal: AbortSignal.timeout(3000),
+    })
+    authenticated.value = response.ok
+    if (authenticated.value) checkApiHealth()
+  } catch {
+    authenticated.value = false
+  }
+}
+
 // ─────────────────────────────────────────────
 //  Lifecycle
 // ─────────────────────────────────────────────
 onMounted(() => {
-  checkApiHealth()
+  restoreSession()
   setInterval(checkApiHealth, 30000)  // Re-check cada 30s
 })
 </script>
@@ -417,6 +460,27 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
 }
+
+.auth-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+.auth-card {
+  width: min(360px, calc(100% - 32px));
+  display: grid;
+  gap: 14px;
+  padding: 28px;
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 12px;
+}
+.auth-card input, .auth-card button {
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+.auth-card button { cursor: pointer; }
+.auth-error { color: #fca5a5; }
 
 /* ── Header ── */
 .app-header {

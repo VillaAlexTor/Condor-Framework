@@ -160,7 +160,6 @@ import { ref, onMounted } from "vue"
 // ─────────────────────────────────────────────
 const props = defineProps({
   apiBase: { type: String, default: "http://localhost:3001" },
-  apiKey:  { type: String, default: "" },
 })
 
 const emit = defineEmits(["imported", "manual-start"])
@@ -322,7 +321,8 @@ async function confirmImport() {
   try {
     const response = await fetch(`${props.apiBase}/api/report/import`, {
       method:  "POST",
-      headers: { "Content-Type": "application/json", "X-API-Key": props.apiKey },
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body:    JSON.stringify(filePreview.value.rawJson),
     })
 
@@ -378,7 +378,7 @@ function startManual() {
 async function loadPreviousReports() {
   try {
     const res  = await fetch(`${props.apiBase}/api/report/list`, {
-      headers: { "X-API-Key": props.apiKey },
+      credentials: "include",
       signal: AbortSignal.timeout(3000),
     })
     const data = await res.json()
@@ -386,24 +386,25 @@ async function loadPreviousReports() {
       previousReports.value = data.files.slice(0, 5)
     }
 
-    async function downloadPrevious(file) {
-      try {
-        const response = await fetch(`${props.apiBase}${file.downloadUrl}`, {
-          headers: { "X-API-Key": props.apiKey },
-        })
-        if (!response.ok) throw new Error(`HTTP ${response.status}`)
-        const blobUrl = URL.createObjectURL(await response.blob())
-        const anchor = document.createElement("a")
-        anchor.href = blobUrl
-        anchor.download = file.filename
-        anchor.click()
-        URL.revokeObjectURL(blobUrl)
-      } catch (err) {
-        error.value = { title: "Error de descarga", detail: err.message || "No se pudo descargar el PDF" }
-      }
-    }
   } catch {
     // Silencioso — no es crítico
+  }
+
+  async function downloadPrevious(file) {
+    try {
+      const response = await fetch(`${props.apiBase}${file.downloadUrl}`, {
+        credentials: "include",
+      })
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      const blobUrl = URL.createObjectURL(await response.blob())
+      const anchor = document.createElement("a")
+      anchor.href = blobUrl
+      anchor.download = file.filename
+      anchor.click()
+      URL.revokeObjectURL(blobUrl)
+    } catch (err) {
+      error.value = { title: "Error de descarga", detail: err.message || "No se pudo descargar el PDF" }
+    }
   }
 }
 
