@@ -925,7 +925,7 @@ const fichaEnriquecida = enrichFicha(ficha)
 |--------|------|-------------|
 | `POST` | `/api/report/import` | Importa JSON de condor-cli, genera fichas |
 | `POST` | `/api/report/generate` | Genera PDF desde fichas + metadata |
-| `GET` | `/api/report/download/:filename` | Servido como estático en `server.js` |
+| `GET` | `/api/report/download/:filename` | Descarga autenticada y limitada al propietario de la sesión |
 
 ---
 

@@ -12,6 +12,19 @@ const router = express.Router()
 const MAX_FICHAS = 100
 const MAX_TEXT_LENGTH = 10000
 
+function metadataPath(outputDir, filename) {
+  return path.join(outputDir, `${filename}.meta.json`)
+}
+
+function canAccessReport(req, outputDir, filename) {
+  try {
+    const metadata = JSON.parse(fs.readFileSync(metadataPath(outputDir, filename), "utf8"))
+    return metadata.ownerId === req.user.id
+  } catch {
+    return false
+  }
+}
+
 function isBoundedText(value, max = MAX_TEXT_LENGTH) {
   return typeof value === "string" && value.length <= max
 }
@@ -168,6 +181,10 @@ router.post("/generate", async (req, res, next) => {
     })
 
     const filename = path.basename(pdfPath)
+    fs.writeFileSync(metadataPath(outputDir, filename), JSON.stringify({
+      ownerId: req.user.id,
+      createdAt: new Date().toISOString(),
+    }))
 
     console.log(`[report/generate] ✓ PDF generado: ${filename}`)
 
@@ -223,6 +240,7 @@ router.get("/list", (req, res, next) => {
 
     const files = fs.readdirSync(outputDir)
       .filter(f => f.endsWith(".pdf"))
+      .filter(f => canAccessReport(req, outputDir, f))
       .map(f => {
         const fullPath = path.join(outputDir, f)
         const stats    = fs.statSync(fullPath)
@@ -238,6 +256,23 @@ router.get("/list", (req, res, next) => {
 
     res.json({ success: true, files })
 
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get("/download/:filename", (req, res, next) => {
+  try {
+    const { filename } = req.params
+    const outputDir = req.app.locals.outputDir
+    const safeFilename = path.basename(filename)
+    if (safeFilename !== filename || !filename.endsWith(".pdf")) {
+      return res.status(400).json({ success: false, message: "Nombre de archivo inválido" })
+    }
+    if (!canAccessReport(req, outputDir, safeFilename)) {
+      return res.status(404).json({ success: false, message: "Archivo no encontrado" })
+    }
+    return res.sendFile(path.join(outputDir, safeFilename))
   } catch (err) {
     next(err)
   }
@@ -264,8 +299,12 @@ router.delete("/:filename", (req, res, next) => {
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ success: false, message: "Archivo no encontrado" })
     }
+    if (!canAccessReport(req, outputDir, safeFilename)) {
+      return res.status(404).json({ success: false, message: "Archivo no encontrado" })
+    }
 
     fs.unlinkSync(filePath)
+    fs.rmSync(metadataPath(outputDir, safeFilename), { force: true })
     console.log(`[report/delete] Eliminado: ${safeFilename}`)
 
     res.json({ success: true, message: `${safeFilename} eliminado` })
