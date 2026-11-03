@@ -21,7 +21,7 @@
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE.md)
 [![Status](https://img.shields.io/badge/Status-En%20Desarrollo-orange?style=flat-square)]()
 [![OSINT](https://img.shields.io/badge/Tipo-OSINT%20Pasivo-red?style=flat-square)]()
 
@@ -86,8 +86,6 @@ Motor de recolección pasiva de inteligencia. Script Python con interfaz de lín
 - Censys.io (puertos, servicios, certificados TLS)
 - Shodan (banners, tecnologías expuestas)
 - Hunter.io (emails corporativos filtrados)
-- FOCA-like (metadatos de documentos públicos vía Google Dorks)
-- Have I Been Pwned API (brechas asociadas al dominio)
 - Wayback Machine / Archive.org (URLs históricas)
 - Certificate Transparency Logs (subdominios via crt.sh)
 
@@ -107,7 +105,7 @@ python condor.py --target ejemplo.com --format html --output reporte.html
 python condor.py --target ejemplo.com --verbose --log condor.log
 ```
 
-**Tecnologías:** Python 3.11+, `argparse`, `dnspython`, `python-whois`, `requests`, `rich` (CLI styling), `jinja2` (HTML output)
+**Tecnologías:** Python 3.11+, `argparse`, `dnspython`, `python-whois`, `requests`, `python-dotenv`
 
 ---
 
@@ -116,30 +114,30 @@ python condor.py --target ejemplo.com --verbose --log condor.log
 Interfaz web interactiva que consume el JSON generado por `condor-cli` y presenta los resultados de forma visual y navegable.
 
 **Características:**
-- Carga de archivos JSON desde el CLI o ingesta directa vía API local
-- Mapa de red interactivo (nodos: dominio → subdominios → IPs → puertos)
-- Timeline de cambios históricos (Wayback + DNS pasivo)
-- Tabla de puertos y servicios con filtros
-- Heatmap de exposición por categoría de riesgo
-- Exportación de vistas seleccionadas hacia `condor-report`
+- Carga y validación de archivos JSON generados por `condor-cli`
+- Resumen general del reconocimiento y nivel de riesgo
+- Vistas específicas para DNS, WHOIS, Wayback, Censys, Shodan y Hunter
+- Timeline de fechas de registro y expiración WHOIS
+- Análisis visual de puertos, servicios, hallazgos y riesgos
+- Navegación entre módulos y carga de nuevos reportes
 
-**Tecnologías:** React 18, D3.js (grafos de red), Recharts (charts), Tailwind CSS, Vite
+**Tecnologías:** React 18, Tailwind CSS, Vite
 
 ---
 
 ###  `condor-report` — Vulnerability Ficha Generator
 
-Generador de informes de auditoría. Toma los datos del dashboard y produce fichas de vulnerabilidad formateadas con scoring CVSS 3.1 automático y recomendaciones.
+Generador de informes de auditoría. Importa el JSON generado por `condor-cli` y produce fichas de vulnerabilidad formateadas con scoring CVSS 3.1 automático y recomendaciones.
 
 **Características:**
 - Fichas individuales por hallazgo con campos: descripción, evidencia, impacto, vector CVSS 3.1
 - Calculadora CVSS 3.1 integrada (AV, AC, PR, UI, S, C, I, A)
 - Clasificación automática: Crítico / Alto / Medio / Bajo / Informativo
 - Recomendaciones predefinidas por categoría de vulnerabilidad
-- Export a PDF, DOCX y HTML
+- Exportación a PDF mediante Puppeteer
 - Portada, índice, resumen ejecutivo y fichas técnicas generados automáticamente
 
-**Tecnologías:** Node.js / Express, Puppeteer (PDF), `docx` library, Vue.js 3 (frontend del generador)
+**Tecnologías:** Node.js / Express, Puppeteer (PDF), Vue.js 3 (frontend del generador)
 
 ---
 condor-framework/
@@ -228,15 +226,14 @@ condor-framework/
         │
         ▼
 3. condor-dashboard (carga scan.json)
-   • Visualiza red de activos, puertos, tecnologías
-   • Analista revisa, filtra, selecciona hallazgos
-   • Exporta: hallazgos_seleccionados.json
+   • Visualiza resultados por módulo y niveles de riesgo
+   • Analista revisa los hallazgos
         │
         ▼
-4. condor-report (carga hallazgos)
+4. condor-report (importa scan.json)
    • Genera fichas por vulnerabilidad
    • Calcula CVSS 3.1 automáticamente
-   • Produce: informe_final.pdf / .docx
+   • Produce: informe_final.pdf
         │
         ▼
 5. INFORME ENTREGADO AL CLIENTE
@@ -255,17 +252,17 @@ condor-framework/
 ### Opción A — Con Docker (recomendado)
 
 ```bash
-git clone https://github.com/villaalextor/condor-framework.git
-cd condor-framework
-docker-compose up -d
+git clone https://github.com/VillaAlexTor/C-ndor-Framework.git
+cd C-ndor-Framework
+docker compose up -d
 ```
 
 ### Opción B — Manual por módulo
 
 ```bash
 # Clonar repositorio
-git clone https://github.com/villaalextor/condor-framework.git
-cd condor-framework
+git clone https://github.com/VillaAlexTor/C-ndor-Framework.git
+cd C-ndor-Framework
 
 # --- condor-cli ---
 cd condor-cli
@@ -289,7 +286,7 @@ npm run dev
 
 ### Variables de entorno
 
-Copiar `.env.example` en cada módulo y completar las API keys:
+Copiar [`condor-cli/.env.example`](condor-cli/.env.example) a `condor-cli/.env` y completar, si se necesitan, las API keys:
 
 ```env
 # condor-cli/.env
@@ -297,10 +294,9 @@ CENSYS_API_ID=tu_api_id
 CENSYS_API_SECRET=tu_api_secret
 SHODAN_API_KEY=tu_shodan_key
 HUNTER_API_KEY=tu_hunter_key
-HIBP_API_KEY=tu_hibp_key
 ```
 
-> **Todas las APIs tienen tier gratuito suficiente para uso académico.** Censys ofrece 250 queries/mes gratis. Shodan tiene plan académico gratuito.
+Los módulos `dns`, `whois`, `crt` y `wayback` funcionan sin API keys. Los módulos `censys`, `shodan` y `hunter` se omiten si no tienen sus credenciales configuradas.
 
 ---
 
@@ -313,7 +309,7 @@ HIBP_API_KEY=tu_hibp_key
 - ❌ Prohibido usar contra objetivos sin consentimiento
 - ❌ No usar para actividades ilegales o maliciosas
 
-El autor no se responsabiliza por el uso indebido de esta herramienta. Ver [LICENSE](LICENSE) y [ÉTICA.md](docs/etica.md).
+El autor no se responsabiliza por el uso indebido de esta herramienta. Ver [LICENSE](LICENSE.md) y [ética](docs/etica.md).
 
 ---
 
@@ -331,6 +327,6 @@ La Paz, Bolivia
 
 ## Licencia
 
-MIT License — ver [LICENSE](LICENSE) para detalles.
+MIT License — ver [LICENSE](LICENSE.md) para detalles.
 
 ---
