@@ -3,6 +3,8 @@ import json
 import sys
 import os
 import logging
+import re
+from html import escape
 from datetime import datetime
 from pathlib import Path
 
@@ -215,6 +217,7 @@ def validate_target(target: str) -> str:
     - Elimina http://, https://, www.
     - Verifica que tenga al menos un punto
     """
+    target = target.strip()
     # Limpiar prefijos de URL
     for prefix in ["https://", "http://", "www."]:
         if target.lower().startswith(prefix):
@@ -223,9 +226,12 @@ def validate_target(target: str) -> str:
     # Quitar trailing slash
     target = target.rstrip("/")
 
-    # Validación básica
-    if "." not in target:
-        raise ValueError(f"Dominio inválido: '{target}'. Debe contener al menos un punto.")
+    if len(target) > 253 or not re.fullmatch(
+        r"(?=.{1,253}\Z)(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)\.)+[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?",
+        target,
+        re.IGNORECASE,
+    ):
+        raise ValueError(f"Dominio inválido: '{target}'. Usa un FQDN válido.")
 
     return target.lower()
 
@@ -383,13 +389,18 @@ def write_html(report: dict, path: str, logger: logging.Logger):
     modules  = report["meta"]["modules_run"]
 
     # Serializar resultados como JSON embebido en el HTML
-    results_json = json.dumps(report["results"], indent=2, ensure_ascii=False, default=str)
+    results_json = escape(json.dumps(report["results"], indent=2, ensure_ascii=False, default=str))
+    errors_json = escape(json.dumps(report["errors"], indent=2, ensure_ascii=False, default=str))
+    safe_target = escape(str(target))
+    safe_ts = escape(str(ts))
+    safe_duration = escape(str(duration))
+    module_badges = "".join(f'<span class="badge">{escape(str(m))}</span>' for m in modules)
 
     html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Cóndor Report — {target}</title>
+  <title>Cóndor Report — {safe_target}</title>
   <style>
     body      {{ font-family: 'Courier New', monospace; background: #0d1117; color: #c9d1d9; margin: 40px; }}
     h1        {{ color: #58a6ff; }}
@@ -405,16 +416,16 @@ def write_html(report: dict, path: str, logger: logging.Logger):
   <h1>🦅 Cóndor Framework — Reporte OSINT</h1>
 
   <div class="meta">
-    <strong>Target:</strong> {target}<br>
-    <strong>Timestamp:</strong> {ts}<br>
-    <strong>Duración:</strong> {duration}s<br>
-    <strong>Módulos:</strong> {"".join(f'<span class="badge">{m}</span>' for m in modules)}
+    <strong>Target:</strong> {safe_target}<br>
+    <strong>Timestamp:</strong> {safe_ts}<br>
+    <strong>Duración:</strong> {safe_duration}s<br>
+    <strong>Módulos:</strong> {module_badges}
   </div>
 
   <h2>Resultados</h2>
   <pre>{results_json}</pre>
 
-  {"<h2>Errores</h2><pre class='error'>" + json.dumps(report['errors'], indent=2) + "</pre>" if report["errors"] else ""}
+  {"<h2>Errores</h2><pre class='error'>" + errors_json + "</pre>" if report["errors"] else ""}
 
   <footer>
     Generado por Cóndor Framework v0.1.0 · github.com/villaalextor/condor-framework

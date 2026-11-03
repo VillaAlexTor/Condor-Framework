@@ -134,7 +134,6 @@ def fetch_domain_search(target: str, api_key: str, timeout: int) -> dict | None:
     try:
         params = {
             "domain":   target,
-            "api_key":  api_key,
             "limit":    100,       # Máximo disponible
             "offset":   0,
         }
@@ -143,7 +142,7 @@ def fetch_domain_search(target: str, api_key: str, timeout: int) -> dict | None:
             HUNTER_DOMAIN_SEARCH,
             params=params,
             timeout=timeout,
-            headers={"Accept": "application/json"}
+            headers={"Accept": "application/json", "Authorization": f"Bearer {api_key}"}
         )
 
         if resp.status_code == 401:

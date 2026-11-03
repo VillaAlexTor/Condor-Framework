@@ -1,5 +1,6 @@
 import whois
 import logging
+from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from datetime import datetime, timezone
 
 logger = logging.getLogger("condor.whois")
@@ -229,14 +230,22 @@ def run(target: str, timeout: int = 10) -> dict:
     """
     logger.info(f"[WHOIS] Consultando registro para: {target}")
 
+    executor = ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(whois.whois, target)
     try:
-        w = whois.whois(target)
+        w = future.result(timeout=max(1, timeout))
+    except TimeoutError:
+        future.cancel()
+        logger.error("[WHOIS] La consulta excedió el timeout de %ss", timeout)
+        return {"status": "error", "message": f"Timeout WHOIS después de {timeout}s"}
     except whois.parser.PywhoisError as e:
         logger.error(f"[WHOIS] Error de parsing: {e}")
         return {"status": "error", "message": str(e)}
     except Exception as e:
         logger.error(f"[WHOIS] Error inesperado: {e}")
         return {"status": "error", "message": str(e)}
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
 
     if not w or not w.domain_name:
         logger.warning("[WHOIS] No se encontró información WHOIS para el dominio")

@@ -11,6 +11,22 @@ const {
 } = require("../lib/recommender")
 
 const router = express.Router()
+const MAX_FICHAS = 100
+const MAX_TEXT_LENGTH = 10000
+
+function validateFichas(fichas) {
+  if (!Array.isArray(fichas)) return "'fichas' debe ser un array"
+  if (fichas.length > MAX_FICHAS) return `No se permiten más de ${MAX_FICHAS} fichas`
+  for (const ficha of fichas) {
+    if (!ficha || typeof ficha !== "object") return "Cada ficha debe ser un objeto"
+    for (const value of Object.values(ficha)) {
+      if (typeof value === "string" && value.length > MAX_TEXT_LENGTH) {
+        return "Los campos de las fichas exceden el límite permitido"
+      }
+    }
+  }
+  return null
+}
 
 // ─────────────────────────────────────────────
 //  GET /api/ficha/categories
@@ -86,6 +102,8 @@ router.post("/enrich-all", (req, res) => {
   if (!Array.isArray(fichas)) {
     return res.status(400).json({ success: false, message: "'fichas' debe ser un array" })
   }
+  const validationError = validateFichas(fichas)
+  if (validationError) return res.status(413).json({ success: false, message: validationError })
 
   try {
     const enriched = enrichAll(fichas)
@@ -105,6 +123,8 @@ router.post("/general-recommendations", (req, res) => {
   if (!Array.isArray(fichas)) {
     return res.status(400).json({ success: false, message: "'fichas' debe ser un array" })
   }
+  const validationError = validateFichas(fichas)
+  if (validationError) return res.status(413).json({ success: false, message: validationError })
 
   const recommendations = generateGeneralRecommendations(fichas)
   res.json({ success: true, count: recommendations.length, recommendations })
