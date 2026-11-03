@@ -295,15 +295,19 @@ PORT=3001
 FRONTEND_URL=http://localhost:5174
 PDF_TIMEOUT=30000      # ms para Puppeteer
 OUTPUT_DIR=./output
-REPORT_API_KEY=generar-una-clave-aleatoria
+REPORT_ADMIN_PASSWORD=generar-una-contraseña-aleatoria
+REPORT_API_KEY=generar-una-clave-aleatoria  # solo automatizaciones
 RATE_LIMIT_MAX=30      # solicitudes protegidas por IP/minuto
 ```
 
 Las rutas de informes, fichas, listado, descarga y eliminación requieren
 `X-API-Key: <REPORT_API_KEY>` (o `Authorization: Bearer <REPORT_API_KEY>`).
-No inicies el backend sin configurar esta clave. En Docker, expón
-`REPORT_API_KEY` mediante el entorno y limita los puertos a localhost o a un
-reverse proxy autenticado.
+No inicies el backend sin configurar `REPORT_ADMIN_PASSWORD`. En Docker,
+limita los puertos a localhost o a un reverse proxy autenticado.
+
+La interfaz web inicia sesión mediante `REPORT_ADMIN_PASSWORD` y recibe una
+cookie de sesión `HttpOnly`; la contraseña nunca se incorpora al bundle
+frontend. `REPORT_API_KEY` queda reservado para automatizaciones no interactivas.
 
 ---
 

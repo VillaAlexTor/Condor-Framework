@@ -257,6 +257,11 @@ cd C-ndor-Framework
 docker compose up -d
 ```
 
+Antes de iniciar el stack, define `REPORT_ADMIN_PASSWORD` en `.env`. La
+interfaz de reportes usa una cookie de sesión `HttpOnly`; no se inyectan claves
+privilegiadas en el bundle JavaScript. `REPORT_API_KEY` queda reservado para
+automatizaciones no interactivas.
+
 ### Opción B — Manual por módulo
 
 ```bash
