@@ -9,7 +9,8 @@ require("dotenv").config()
 const express = require("express")
 const cors    = require("cors")
 const path    = require("path")
-const crypto  = require("crypto")
+const authRoutes = require("./routes/auth")
+const { requireAuth } = require("./auth")
 
 const reportRoutes = require("./routes/report")
 const cvssRoutes   = require("./routes/cvss")
@@ -23,11 +24,20 @@ const app = express()
 
 const PORT          = process.env.PORT          || 3001
 const OUTPUT_DIR    = process.env.OUTPUT_DIR    || path.join(__dirname, "..", "output")
-const REPORT_API_KEY = process.env.REPORT_API_KEY || ""
 const PDF_TIMEOUT   = Number(process.env.PDF_TIMEOUT || 30000)
 const RATE_LIMIT_WINDOW_MS = 60 * 1000
-const RATE_LIMIT_MAX = Number(process.env.RATE_LIMIT_MAX || 30)
+const configuredRateLimit = Number(process.env.RATE_LIMIT_MAX || 30)
+const RATE_LIMIT_MAX = Number.isFinite(configuredRateLimit) && configuredRateLimit > 0
+  ? Math.floor(configuredRateLimit)
+  : 30
 const requestCounts = new Map()
+const cleanupRateLimitTimer = setInterval(() => {
+  const cutoff = Date.now() - RATE_LIMIT_WINDOW_MS
+  for (const [key, value] of requestCounts) {
+    if (value.startedAt < cutoff) requestCounts.delete(key)
+  }
+}, RATE_LIMIT_WINDOW_MS)
+cleanupRateLimitTimer.unref()
 
 // ─────────────────────────────────────────────
 //  Middleware
@@ -47,6 +57,7 @@ app.use(cors({
   },
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization", "X-API-Key"],
+  credentials: true,
 }))
 
 // Body parser para JSON
@@ -54,20 +65,6 @@ app.use(express.json({ limit: "10mb" }))
 
 app.locals.outputDir = path.resolve(OUTPUT_DIR)
 app.locals.pdfTimeout = Number.isFinite(PDF_TIMEOUT) && PDF_TIMEOUT > 0 ? PDF_TIMEOUT : 30000
-
-function requireApiKey(req, res, next) {
-  if (!REPORT_API_KEY) {
-    return res.status(503).json({ success: false, message: "API no configurada: falta REPORT_API_KEY" })
-  }
-
-  const provided = req.get("X-API-Key") || req.get("Authorization")?.replace(/^Bearer\s+/i, "")
-  const expected = Buffer.from(REPORT_API_KEY)
-  const received = Buffer.from(provided || "")
-  if (received.length !== expected.length || !crypto.timingSafeEqual(received, expected)) {
-    return res.status(401).json({ success: false, message: "Autenticación requerida" })
-  }
-  next()
-}
 
 function rateLimit(req, res, next) {
   const key = req.ip || "unknown"
@@ -84,16 +81,23 @@ function rateLimit(req, res, next) {
   next()
 }
 
-// Servir archivos estáticos del directorio de output (PDFs generados)
-app.use("/api/report/download", rateLimit, requireApiKey, express.static(app.locals.outputDir))
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff")
+  res.setHeader("X-Frame-Options", "DENY")
+  res.setHeader("Referrer-Policy", "no-referrer")
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+  res.setHeader("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'")
+  next()
+})
 
 // ─────────────────────────────────────────────
 //  Rutas API
 // ─────────────────────────────────────────────
 
-app.use("/api/report", rateLimit, requireApiKey, reportRoutes)
-app.use("/api/cvss",   rateLimit, requireApiKey, cvssRoutes)
-app.use("/api/ficha",  rateLimit, requireApiKey, fichaRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/report", rateLimit, requireAuth, reportRoutes)
+app.use("/api/cvss",   rateLimit, requireAuth, cvssRoutes)
+app.use("/api/ficha",  rateLimit, requireAuth, fichaRoutes)
 
 // ─────────────────────────────────────────────
 //  Health check
@@ -129,7 +133,6 @@ app.use((err, req, res, next) => {
   res.status(500).json({
     success: false,
     message: "Error interno del servidor",
-    error:   process.env.NODE_ENV === "development" ? err.message : undefined,
   })
 })
 
